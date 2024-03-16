@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "composite": true,
+        "jsx": "react",
+        // "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "src/renderer/src/*"
+            ],
+            "@renderer/*": [
+                "src/renderer/src/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

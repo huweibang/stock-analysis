@@ -1,0 +1,39 @@
+// 涨
+$riseColor: #f5222d;
+$riseBackgroundColor: #fff2f0;
+$riseBorderColor: #ffccc7;
+
+// 跌
+$fallColor: #389e0d;
+$fallBackgroundColor: #f6ffed;
+$fallBorderColor: #b7eb8f;
+
+%rise {
+    color: $riseColor;
+}
+%rise-bk {
+    background-color: $riseBackgroundColor;
+    border-color: $riseBorderColor;
+}
+%fall {
+    color: $fallColor;
+}
+%fall-bk {
+    background-color: $fallBackgroundColor;
+    border-color: $fallBorderColor;
+}
+
+//  混合（mixin）定义一个滚动样式类
+@mixin scrollbar {
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: 8px;
+        background-color: #ccc;
+    }
+    &::-webkit-scrollbar-track {
+        border-radius: 8px;
+        background-color: #e7e7e7;
+    }
+}

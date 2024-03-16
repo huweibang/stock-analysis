@@ -1,0 +1,72 @@
+body {
+	display: flex;
+	flex-direction: column;
+	font-family:
+		Roboto,
+		-apple-system,
+		BlinkMacSystemFont,
+		'Helvetica Neue',
+		'Segoe UI',
+		'Oxygen',
+		'Ubuntu',
+		'Cantarell',
+		'Open Sans',
+		sans-serif;
+	color: #86a5b1;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+}
+
+ul {
+	list-style: none;
+}
+
+a {
+	color: #9feaf9;
+	font-weight: 600;
+	cursor: pointer;
+	text-decoration: none;
+	outline: none;
+}
+
+a:hover {
+	border-bottom: 1px solid;
+}
+
+.app {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+
+	.app-container {
+		flex: 1;
+		display: flex;
+		overflow: hidden;
+		.app-flex {
+			@include scrollbar;
+			flex: 1;
+			color: #000;
+			overflow-y: auto
+		}
+	}
+}
+
+.ant-tooltip {
+    z-index: 9999;
+}
+
+.rise {
+	@extend %rise;
+}
+.fall {
+	@extend %fall;
+}
+.rise-bk {
+	@extend %rise-bk;
+}
+.fall-bk {
+	@extend %fall-bk;
+}
