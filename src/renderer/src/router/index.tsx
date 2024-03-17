@@ -73,7 +73,7 @@ const pages :RouteObject[] = [
             {
                 path: '/Test/Test1',
                 label: "测试页1",
-                hidden: true,
+                hidden: false,
                 element: <Test1 />
             },
             {

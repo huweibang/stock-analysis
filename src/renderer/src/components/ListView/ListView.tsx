@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, message } from 'antd';
+import { Table, message, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import type { DragEndEvent, UniqueIdentifier } from '@dnd-kit/core';
 import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
@@ -11,6 +12,8 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { ColumnsType } from 'antd/es/table';
+import "@/assets/styles/ListView.scss"
+
 
 interface DataType {
     key: UniqueIdentifier;
@@ -30,6 +33,11 @@ const columns: ColumnsType<DataType> = [
     {
         title: '股票',
         dataIndex: 'mc',
+        render: (_, record) => {
+            return <Dropdown menu={{ items }} trigger={['contextMenu']} open={isDrop}>
+                <div className="item-spn">{record.mc}</div>
+            </Dropdown>
+        }
     },
     {
         title: '最新价',
@@ -37,7 +45,9 @@ const columns: ColumnsType<DataType> = [
         sortDirections: ['descend', 'ascend'], // 先降序，在升序
         sorter: (a, b) => a.p - b.p,
         render: (_, record) => {
-            return <span className={Number(record.ud) > 0 ? 'rise' : 'fall'}>{record.p}</span>
+            return <Dropdown menu={{ items }} trigger={['contextMenu']} open={isDrop}>
+                <div className={`${Number(record.ud) > 0 ? 'rise' : 'fall'} item-spn`}>{record.p}</div>
+            </Dropdown>
         }
     },
     {
@@ -46,10 +56,12 @@ const columns: ColumnsType<DataType> = [
         sortDirections: ['descend', 'ascend'],
         sorter: (a, b) => Number(a.pc.replace("%", "")) - Number(b.pc.replace("%", "")),
         render: (_, record) => {
-            return <span className={Number(record.ud) > 0 ? 'rise' : 'fall'}>
-                {Number(record.ud) > 0 ? '+' : ''}
-                {record.pc}%
-            </span>
+            return <Dropdown menu={{ items }} trigger={['contextMenu']} open={isDrop}>
+                <div className={`${Number(record.ud) > 0 ? 'rise' : 'fall'} item-spn`}>
+                    {Number(record.ud) > 0 ? '+' : ''}
+                    {record.pc}%
+                </div>
+            </Dropdown>
         }
     },
     {
@@ -58,10 +70,12 @@ const columns: ColumnsType<DataType> = [
         sortDirections: ['descend', 'ascend'],
         sorter: (a, b) => Number(a.ud) - Number(b.ud),
         render: (_, record) => {
-            return <span className={Number(record.ud) > 0 ? 'rise' : 'fall'}>
-                {Number(record.ud) > 0 ? '+' : ''}
-                {record.ud}
-            </span>
+            return <Dropdown menu={{ items }} trigger={['contextMenu']} open={isDrop}>
+                <div className={`${Number(record.ud) > 0 ? 'rise' : 'fall'} item-spn`}>
+                    {Number(record.ud) > 0 ? '+' : ''}
+                    {record.ud}
+                </div>
+            </Dropdown>
         }
     },
 ];
@@ -87,8 +101,26 @@ const Row = (props: RowProps) => {
     return <tr {...props} ref={setNodeRef} style={style} {...attributes} {...listeners} />;
 };
 
+
+const items: MenuProps['items'] = [
+    {
+        label: "详情",
+        key: '0',
+        onClick: () => {
+            console.log(123)
+        }
+    },
+    {
+        label: "删除",
+        key: '1',
+        onClick: () => {
+            console.log(456)
+        }
+    },
+];
+
 const ListView: React.FC<ListViewProps> = ({ data }) => {
-    const [dataSource, setDataSource] = useState<DataType []>([]);
+    const [dataSource, setDataSource] = useState<DataType[]>([]);
     const [messageApi, contextHolder] = message.useMessage();
 
     useEffect(() => {
@@ -113,7 +145,7 @@ const ListView: React.FC<ListViewProps> = ({ data }) => {
                 let arr = []
                 newArray.forEach(item => {
                     arr.push({
-                        name: item.mc, 
+                        name: item.mc,
                         api_code: item.api_code
                     })
                 })
@@ -153,10 +185,10 @@ const ListView: React.FC<ListViewProps> = ({ data }) => {
                     pagination={false}
                     columns={columns}
                     sticky={{ offsetHeader: 0 }}
-                    dataSource={dataSource} />
+                    dataSource={dataSource}
+                />
             </SortableContext>
         </DndContext>
     )
 }
-
 export default ListView

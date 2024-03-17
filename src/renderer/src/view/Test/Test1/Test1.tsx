@@ -1,8 +1,9 @@
 import React from 'react';
+import CustomizeMenu from "@/components/CustomizeMenu/CustomizeMenu"
 
 const Test1: React.FC = () => {
     return (
-        <div>test1</div>
+        <CustomizeMenu />
     )
 }
 
