@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
     PushpinOutlined,
     PlusOutlined,
@@ -70,7 +70,9 @@ const Header: React.FC = () => {
     const [placement, setPlacement] = useState<DrawerProps['placement']>('top');
     const appRegionStyle: any = open ? { WebkitAppRegion: 'no-drag' } : { WebkitAppRegion: 'drag' };
     const [messageApi, contextHolder] = message.useMessage();
+
     const showDrawer = () => {
+        localStorage.isUpData = 1;
         setOpen(true);
     };
 

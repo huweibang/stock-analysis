@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react"
 import ListView from "@/components/ListView/ListView"
 import { useLocation, useNavigate } from "react-router-dom"
-import { openEquityMarketDay } from "@/utils/index"
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import {
@@ -11,8 +10,9 @@ import {
     mighty,
     nextNew,
     boomStock,
-} from '@/api/index'
-import '@/assets/styles/StockList.scss'
+} from '@/api/index';
+import { openEquityMarketDay } from "@/utils/index";
+import '@/assets/styles/StockList.scss';
 
 const StockList: React.FC = () => {
     const [data, setData] = useState([])

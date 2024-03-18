@@ -4,7 +4,8 @@ import ListView from "@/components/ListView/ListView"
 import { getStockDetail } from '@/api/index'
 import { message } from "antd";
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { debounce } from '@/utils/index'
+import { debounce } from '@/utils/index';
+import { ParentContext } from '@/utils/context';
 
 interface DataType {
     key: UniqueIdentifier;
@@ -14,6 +15,7 @@ interface DataType {
     id: string;
     pc: string;
     api_code: string;
+    zf: string;
 }
 
 // 自选
@@ -60,6 +62,11 @@ const Optional: React.FC = () => {
         })
     }
 
+    // 获取移动后的list
+    const handleMoveList = (list: DataType[]) => {
+        console.log(list)
+    }
+    
     // 监听文件变化
     const listen = () => {
         fs.watch("./self-select-stock.txt", debouncedHandler)
@@ -68,18 +75,25 @@ const Optional: React.FC = () => {
     const debouncedHandler = debounce((eventType, filename) => {
         if (eventType == "change" && filename) {
             fs.readFile("./self-select-stock.txt", "utf8", async (err, data) => {
-                if (err) return;
-                const lastItem = JSON.parse(data)[JSON.parse(data).length - 1]
-                const indexDetail = await getStockDetail(lastItem.api_code);
-                const newItem = {
-                    ...indexDetail,
-                    key: JSON.parse(data).length.toString(),
-                    mc: lastItem.name,
-                    api_code: lastItem.api_code
-                };
-                setList(list => {
-                    return [...list, newItem]
-                })
+                if (err) { console.log("读取失败"); return };
+                if (localStorage.isUpData == 1) {
+                    localStorage.isUpData = 0;
+                    const lastItem = JSON.parse(data)[JSON.parse(data).length - 1];
+                    const indexDetail = await getStockDetail(lastItem.api_code);
+                    const newItem = {
+                        ...indexDetail,
+                        key: "9999",
+                        mc: lastItem.name,
+                        api_code: lastItem.api_code
+                    };
+                    setList(list => {
+                        let mergeArr = [...list, newItem];
+                        mergeArr.map((item, index) => item.key = index.toString());
+                        
+                        console.log("add", mergeArr)
+                        return mergeArr;
+                    })
+                }
             })
         }
     })
@@ -89,15 +103,17 @@ const Optional: React.FC = () => {
         listen();
 
         // 清除函数，用于在组件卸载时停止监视  
-        return () => {  
-            fs.unwatchFile("./self-select-stock.txt", debouncedHandler);  
-        }; 
+        return () => {
+            fs.unwatchFile("./self-select-stock.txt", debouncedHandler);
+        };
     }, [])
 
     return (
         <div>
             {contextHolder}
-            <ListView data={list}></ListView>
+            <ParentContext.Provider value={true}>
+                <ListView data={list} getMoveList={() => handleMoveList}></ListView>
+            </ParentContext.Provider>
         </div>
     )
 }
