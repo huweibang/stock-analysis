@@ -1,16 +1,16 @@
-import request, { get } from "@/api/axios"
+import { get } from '@/api/axios'
 
 // 麦蕊智数licence
-const licence = 'aa43656c35008536b3';
-// 4c45e6480502b27048
+const licence = '4c45e6480502b27048'
+// aa43656c35008536b3
 
 // 麦蕊智数
 // 获取所有股票（5000+只股）
-export const getHsltList = p => get(`/hslt/list/${licence}`, p, '/mapi')
+export const getHsltList = (p) => get(`/hslt/list/${licence}`, p, '/mapi')
 // 实时交易数据接口
 export const getStockDetail = (c, p) => get(`/hsrl/ssjy/${c}/${licence}`, p, '/mapi')
 // 获取沪深指数
-export const getAllIndexList = p => get(`/zs/all/${licence}`, p, '/mapi')
+export const getAllIndexList = (p) => get(`/zs/all/${licence}`, p, '/mapi')
 // 指数实时数据接口
 export const indexRealTimeData = (c, p) => get(`/zs/sssj/${c}/${licence}`, p, '/mapi', 60000)
 // 涨停股池
@@ -26,6 +26,6 @@ export const boomStock = (d, p) => get(`/hslt/zbgc/${d}/${licence}`, p, '/mapi',
 
 // stockApi
 // 查询所有A股股票数据，包括股票名称、股票代码
-export const getBaseAll = p => get(`/v1/base/all`, p, '/sapi')
+export const getBaseAll = (p) => get(`/v1/base/all`, p, '/sapi')
 // 查询所有A股股票历史日线，周线，月线行情，数据都是前复权的
-export const getBaseDay = p => get(`/v1/base/day`, p, '/sapi')
+export const getBaseDay = (p) => get(`/v1/base/day`, p, '/sapi')

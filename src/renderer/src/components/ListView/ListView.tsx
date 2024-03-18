@@ -166,10 +166,6 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
         },
     ];
 
-    const updateParentObject = (newArray: DataType[]) => {
-        getMoveList(newArray); // 调用父组件的回调函数，传递更新后的对象  
-    }
-
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {
@@ -184,8 +180,11 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                 const activeIndex = prev.findIndex((i) => i.key === active.id);
                 const overIndex = prev.findIndex((i) => i.key === over?.id);
                 const newArray = arrayMove(prev, activeIndex, overIndex);
-                updateParentObject(newArray);
-                console.log(newArray)
+
+                if(getMoveList) {
+                    getMoveList(newArray);
+                }
+                
                 if (isDrop) {
                     let arr = []
                     newArray.forEach(item => {

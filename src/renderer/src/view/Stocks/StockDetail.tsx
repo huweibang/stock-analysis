@@ -1,8 +1,12 @@
 import React from 'react';
+import ReturnBack from "@/components/ReturnBack/ReturnBack";
+import "@/assets/styles/StockDetail.scss";
 
 const StockDetail: React.FC = () => {
     return (
-        <div>111</div>
+        <div className='box'>
+            <ReturnBack />
+        </div>
     )
 }
 

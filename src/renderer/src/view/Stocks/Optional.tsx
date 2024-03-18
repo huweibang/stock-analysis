@@ -63,10 +63,10 @@ const Optional: React.FC = () => {
     }
 
     // 获取移动后的list
-    const handleMoveList = (list: DataType[]) => {
-        console.log(list)
+    const handleMoveList = (arr) => {
+        setList(arr)
     }
-    
+
     // 监听文件变化
     const listen = () => {
         fs.watch("./self-select-stock.txt", debouncedHandler)
@@ -74,9 +74,9 @@ const Optional: React.FC = () => {
 
     const debouncedHandler = debounce((eventType, filename) => {
         if (eventType == "change" && filename) {
-            fs.readFile("./self-select-stock.txt", "utf8", async (err, data) => {
-                if (err) { console.log("读取失败"); return };
-                if (localStorage.isUpData == 1) {
+            if (localStorage.isUpData == 1) {
+                fs.readFile("./self-select-stock.txt", "utf8", async (err, data) => {
+                    if (err) { console.log("读取失败"); return };
                     localStorage.isUpData = 0;
                     const lastItem = JSON.parse(data)[JSON.parse(data).length - 1];
                     const indexDetail = await getStockDetail(lastItem.api_code);
@@ -89,12 +89,10 @@ const Optional: React.FC = () => {
                     setList(list => {
                         let mergeArr = [...list, newItem];
                         mergeArr.map((item, index) => item.key = index.toString());
-                        
-                        console.log("add", mergeArr)
                         return mergeArr;
                     })
-                }
-            })
+                })
+            }
         }
     })
 
@@ -112,7 +110,7 @@ const Optional: React.FC = () => {
         <div>
             {contextHolder}
             <ParentContext.Provider value={true}>
-                <ListView data={list} getMoveList={() => handleMoveList}></ListView>
+                <ListView data={list} getMoveList={handleMoveList}></ListView>
             </ParentContext.Provider>
         </div>
     )

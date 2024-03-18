@@ -1,9 +1,7 @@
 
 import React, { useState, useEffect } from "react"
 import ListView from "@/components/ListView/ListView"
-import { useLocation, useNavigate } from "react-router-dom"
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { useLocation } from "react-router-dom"
 import {
     limitUp,
     limitDown,
@@ -12,14 +10,12 @@ import {
     boomStock,
 } from '@/api/index';
 import { openEquityMarketDay } from "@/utils/index";
-import '@/assets/styles/StockList.scss';
+import ReturnBack from "@/components/ReturnBack/ReturnBack";
 
 const StockList: React.FC = () => {
     const [data, setData] = useState([])
     const { state } = useLocation();
     const num = (state as { num: number }).num;
-    // 定义跳转
-    const navigate = useNavigate();
 
     // 涨停股池
     const getLimitUp = async () => {
@@ -83,9 +79,7 @@ const StockList: React.FC = () => {
 
     return (
         <div className='box'>
-            <div className="back">
-                <Button icon={<ArrowLeftOutlined />} size="small" onClick={() => navigate(-1)}></Button>
-            </div>
+            <ReturnBack />
             <ListView data={data}></ListView>
         </div>
     )
