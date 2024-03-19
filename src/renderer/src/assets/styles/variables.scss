@@ -1,37 +1,42 @@
-// 涨
-$riseColor: #f5222d;
-$riseBackgroundColor: #fff2f0;
-$riseBorderColor: #ffccc7;
-
-// 跌
-$fallColor: #389e0d;
-$fallBackgroundColor: #f6ffed;
-$fallBorderColor: #b7eb8f;
+:root {
+    --main-rise-color: #f5222d;
+    --rise-border-color: #ffccc7;
+    --rise-background-color: #fff2f0;
+    --main-fall-color: #389e0d;
+    --fall-border-color: #b7eb8f;
+    --fall-background-color: #f6ffed;
+}
 
 %rise {
-    color: $riseColor;
+    color: var(--main-rise-color);
 }
+
 %rise-bk {
-    background-color: $riseBackgroundColor;
-    border-color: $riseBorderColor;
+    border-color: var(--rise-border-color);
+    background-color: var(--rise-background-color);
 }
+
 %fall {
-    color: $fallColor;
+    color: var(--main-fall-color);
 }
+
 %fall-bk {
-    background-color: $fallBackgroundColor;
-    border-color: $fallBorderColor;
+    border-color: var(--fall-border-color);
+    background-color: var(--fall-background-color);
 }
+
 
 //  混合（mixin）定义一个滚动样式类
 @mixin scrollbar {
     &::-webkit-scrollbar {
         width: 6px;
     }
+
     &::-webkit-scrollbar-thumb {
         border-radius: 8px;
         background-color: #ccc;
     }
+
     &::-webkit-scrollbar-track {
         border-radius: 8px;
         background-color: #e7e7e7;

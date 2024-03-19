@@ -6,6 +6,28 @@ import './assets/styles/App.scss'
 import Header from './components/Header/Header';
 import MenuNav from './components/MenuNav/MenuNav';
 
+// @ts-ignore
+const fs = window.api.moduleFs();
+fs.readFile("./setting.json", "utf8", (err, data) => {
+	if (err) { console.log("读取失败"); return };
+	const settingData = JSON.parse(data);
+	if(settingData.riseFall == "fall") {
+		document.documentElement.style.setProperty('--main-rise-color', '#389e0d');
+		document.documentElement.style.setProperty('--rise-border-color', '#b7eb8f');
+		document.documentElement.style.setProperty('--rise-background-color', '#f6ffed');
+		document.documentElement.style.setProperty('--main-fall-color', '#f5222d');
+		document.documentElement.style.setProperty('--fall-border-color', '#ffccc7');
+		document.documentElement.style.setProperty('--fall-background-color', '#fff2f0');
+	} else if(settingData.riseFall == "rise") {
+		document.documentElement.style.setProperty('--main-rise-color', '#f5222d');
+		document.documentElement.style.setProperty('--rise-border-color', '#ffccc7');
+		document.documentElement.style.setProperty('--rise-background-color', '#fff2f0');
+		document.documentElement.style.setProperty('--main-fall-color', '#389e0d');
+		document.documentElement.style.setProperty('--fall-border-color', '#b7eb8f');
+		document.documentElement.style.setProperty('--fall-background-color', '#f6ffed');
+	}
+})
+
 // Router数组扁平化
 const renderRouter = (routes): RouteObject[] => {
 	return routes.reduce((arr, item) => {

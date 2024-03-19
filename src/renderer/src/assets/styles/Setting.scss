@@ -1,10 +1,13 @@
 .set-box {
-    padding: 10px;
-    &-title {
-        padding: 0 6px;
-        margin-bottom: 10px;
-    }
+    padding: 6px 10px;
+}
+.set-box-title {
+    margin: 6px 0 8px 0;
+    font-size: 16px;
 }
 .set-form {
     padding: 0 6px;
+}
+.ant-form-item {
+    margin-bottom: 0;
 }

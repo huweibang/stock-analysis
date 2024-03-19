@@ -87,12 +87,12 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                     await dataSource.splice(index, 1);
                     await setDataSource(dataSource);
 
-                    fs.readFile("./self-select-stock.txt", "utf8", (err, data) => {
+                    fs.readFile("./stock.txt", "utf8", (err, data) => {
                         if (err) { console.log("读取失败"); return };
                         let arr = JSON.parse(data);
                         arr.splice(index, 1)
 
-                        fs.writeFile("./self-select-stock.txt", JSON.stringify(arr), err => {
+                        fs.writeFile("./stock.txt", JSON.stringify(arr), err => {
                             if (err) { console.log("写入失败"); return };
                             messageApi.open({
                                 type: 'success',
@@ -194,7 +194,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                         })
                     })
 
-                    fs.writeFile("./self-select-stock.txt", JSON.stringify(arr), err => {
+                    fs.writeFile("./stock.txt", JSON.stringify(arr), err => {
                         if (err) {
                             return
                         }

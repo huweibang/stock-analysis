@@ -1,12 +1,13 @@
 import { app, shell, BrowserWindow, Tray, Menu, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import icon from '../../resources/icon.png?asset';
+import fs from 'fs';
 
 let appTray = null  // 在外面创建tray变量，防止被自动删除，导致图标自动消失
 
 const mainWindow = {
-	allowQuitting: true, // false 关闭至托盘  true 销毁窗口
+	allowQuitting: true, // true 销毁窗口 false 关闭至托盘
 	isShow: true,
 	isTop: false,
 	winObj: null
@@ -85,7 +86,11 @@ const init = () => {
 	
 	// 设置关闭程序行为
 	ipcMain.on('change-allowQuitting', () => {
-		mainWindow.allowQuitting = !mainWindow.allowQuitting
+		fs.readFile("./setting.json", "utf8", (err, data) => {
+			if (err) { console.log("读取失败"); return };
+			let settingData = JSON.parse(data);
+			settingData.closeTray ? mainWindow.allowQuitting = false : mainWindow.allowQuitting = true
+		})
 	})
 
 	// 创建右下角任务栏图标

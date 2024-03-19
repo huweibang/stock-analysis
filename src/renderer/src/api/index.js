@@ -1,8 +1,8 @@
 import { get } from '@/api/axios'
 
 // 麦蕊智数licence
-const licence = '4c45e6480502b27048'
-// aa43656c35008536b3
+const licence = 'aa43656c35008536b3'
+// 4c45e6480502b27048
 
 // 麦蕊智数
 // 获取所有股票（5000+只股）

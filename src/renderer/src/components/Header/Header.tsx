@@ -117,14 +117,12 @@ const Header: React.FC = () => {
         } else {
             setIsTable(false);
         }
-        console.log("股票列表", allStockList)
         const filterArr = allStockList.filter(item => {
             return (
                 item.api_code.toLowerCase().includes(event.target.value) ||
                 item.name.toLowerCase().includes(event.target.value)
             )
         })
-        console.log("筛选结果", filterArr)
         setData(filterArr);
     }
     const d_handlerSearch = debounce(handlerSearch);
@@ -197,8 +195,8 @@ const Header: React.FC = () => {
                                         setIsTable(false);
                                         // @ts-ignore
                                         const fs = window.api.moduleFs();
-                                        // 先读取self-select-stock.txt里的数据
-                                        fs.readFile("./self-select-stock.txt", "utf8", (err, data) => {
+                                        // 先读取stock.txt里的数据
+                                        fs.readFile("./stock.txt", "utf8", (err, data) => {
                                             if (err) {
                                                 console.log("读取失败");
                                             } else {
@@ -216,7 +214,7 @@ const Header: React.FC = () => {
                                                     name: row.name,
                                                     api_code: row.api_code
                                                 });
-                                                fs.writeFile("./self-select-stock.txt", JSON.stringify(arr), err => {
+                                                fs.writeFile("./stock.txt", JSON.stringify(arr), err => {
                                                     if (err) {
                                                         messageApi.open({
                                                             type: 'error',
@@ -236,7 +234,6 @@ const Header: React.FC = () => {
                             }} />
                     ) : null
                 }
-
             </Drawer>
             <Divider />
         </div>
