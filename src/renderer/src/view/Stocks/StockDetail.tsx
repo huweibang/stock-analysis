@@ -6,7 +6,7 @@ const StockDetail: React.FC = () => {
     return (
         <div className='box'>
             <ReturnBack />
-
+            
         </div>
     )
 }

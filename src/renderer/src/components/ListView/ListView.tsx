@@ -39,6 +39,8 @@ interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
 
 // @ts-ignore
 const fs = window.api.moduleFs();
+// @ts-ignore
+const shell = window.api.moduleShell();
 
 const Row = (props: RowProps) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -75,7 +77,8 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
             label: "详情",
             key: '0',
             onClick: () => {
-                navigate("/Stocks/StockDetail")
+                // 打开浏览器页面查看详情
+                shell.openExternal('https://www.baidu.com');
             }
         },
         isDrop ? {

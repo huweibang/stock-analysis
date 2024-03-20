@@ -1,6 +1,7 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer, shell } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import fs from "fs"
+import { Shell } from 'electron'
 
 // Custom APIs for renderer
 const api = {
@@ -25,6 +26,10 @@ const api = {
 	// 调用Node.js内置模块的功能 
 	moduleFs: () => {
 		const result = fs
+		return result
+	},
+	moduleShell: () => {
+		const result = shell
 		return result
 	}
 }

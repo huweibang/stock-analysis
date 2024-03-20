@@ -6,6 +6,7 @@ import {
     SettingOutlined,
     BorderOuterOutlined
 } from '@ant-design/icons';
+import NotFound from "@/components/NotFound/NotFound";
 import Index from "../view/Index/Index";
 import Operation from "../view/Stocks/Optional";
 import StockList from "../view/Stocks/StockList";
@@ -25,6 +26,12 @@ type RouteObject = {
 }
 
 const pages :RouteObject[] = [
+    {
+        path: "*",
+        label: "404",
+        hidden: true,
+        element: <NotFound />,
+    },
     {
         path: "/",
         label: "行情",
@@ -83,7 +90,7 @@ const pages :RouteObject[] = [
                 element: <Test2 />
             }
         ]
-    }
+    },
 ];
 
 export default pages;

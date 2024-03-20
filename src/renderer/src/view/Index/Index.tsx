@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Divider, Col, Row, List, Space, Skeleton } from 'antd';
+import { Divider, Col, Row, List, Space, Skeleton, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 import {
     getAllIndexList,
     indexRealTimeData,
@@ -55,27 +56,43 @@ const stockIndexList = (data: indexType[]) => {
     )
 }
 
+// @ts-ignore
+const shell = window.api.moduleShell();
+
+const items: MenuProps['items'] = [
+    {
+        label: "详情",
+        key: '0',
+        onClick: () => {
+            // 打开浏览器页面查看详情
+            shell.openExternal('https://www.baidu.com');
+        }
+    },
+]
+
 // 渲染池子股票列表
 const poolStockList = (data: indexType[]) => {
     return <List
         dataSource={data}
         renderItem={(item: { mc: string; dm: string; zf: any; p: number; }) => (
             <List.Item>
-                <div className="pool-list">
-                    <div className="pool-left">
-                        <span>{item.mc}</span>
-                        <span>{item.dm}</span>
+                <Dropdown menu={{ items }} trigger={['contextMenu']}>
+                    <div className="pool-list">
+                        <div className="pool-left">
+                            <span>{item.mc}</span>
+                            <span>{item.dm}</span>
+                        </div>
+                        <div className={`${Number(item.zf) > 0 ? 'rise' : 'fall'} pool-item`}>{item.p}</div>
+                        <div className={`${Number(item.zf) > 0 ? 'rise' : 'fall'} pool-item`}>
+                            {Number(item.zf) > 0 ? '+' : ''}
+                            {(item.p - (item.p / (Number(item.zf) / 100 + 1))).toFixed(2)}
+                        </div>
+                        <div className={Number(item.zf) > 0 ? 'rise' : 'fall'}>
+                            {Number(item.zf) > 0 ? '+' : ''}
+                            {item.zf}%
+                        </div>
                     </div>
-                    <div className={`${Number(item.zf) > 0 ? 'rise' : 'fall'} pool-item`}>{item.p}</div>
-                    <div className={`${Number(item.zf) > 0 ? 'rise' : 'fall'} pool-item`}>
-                        {Number(item.zf) > 0 ? '+' : ''}
-                        {(item.p - (item.p / (Number(item.zf) / 100 + 1))).toFixed(2)}
-                    </div>
-                    <div className={Number(item.zf) > 0 ? 'rise' : 'fall'}>
-                        {Number(item.zf) > 0 ? '+' : ''}
-                        {item.zf}%
-                    </div>
-                </div>
+                </Dropdown>
             </List.Item>
         )}
     />
