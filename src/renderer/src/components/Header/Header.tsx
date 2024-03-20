@@ -89,13 +89,11 @@ const Header: React.FC = () => {
             setWinTopVa('置顶')
             setIsTop(false)
         }
-        // @ts-ignore
         window.api.windowTop();
     }
 
     // 窗口最小化
     const windowMin = () => {
-        // @ts-ignore
         window.api.windowMin();
     }
 
@@ -193,7 +191,7 @@ const Header: React.FC = () => {
                                         setIkey(ikey);
                                         setData([]);
                                         setIsTable(false);
-                                        // @ts-ignore
+                                        
                                         const fs = window.api.moduleFs();
                                         // 先读取stock.txt里的数据
                                         fs.readFile("./stock.txt", "utf8", (err, data) => {

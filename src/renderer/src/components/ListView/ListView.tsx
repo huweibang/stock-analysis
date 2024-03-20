@@ -37,9 +37,7 @@ interface RowProps extends React.HTMLAttributes<HTMLTableRowElement> {
     'data-row-key': string;
 }
 
-// @ts-ignore
 const fs = window.api.moduleFs();
-// @ts-ignore
 const shell = window.api.moduleShell();
 
 const Row = (props: RowProps) => {

@@ -5,9 +5,7 @@ import { Routes, Route, RouteObject } from 'react-router-dom';
 import './assets/styles/App.scss'
 import Header from './components/Header/Header';
 import MenuNav from './components/MenuNav/MenuNav';
-import NotFound from "@/components/NotFound/NotFound";
 
-// @ts-ignore
 const fs = window.api.moduleFs();
 fs.readFile("./setting.json", "utf8", (err, data) => {
 	if (err) { console.log("读取失败"); return };

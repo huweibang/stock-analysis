@@ -22,7 +22,6 @@ interface DataType {
 const Optional: React.FC = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [list, setList] = useState<DataType[]>([]);
-    // @ts-ignore
     const fs = window.api.moduleFs();
 
     const getList = async () => {

@@ -5,6 +5,31 @@
   "main": "./out/main/index.js",
   "author": "example.com",
   "homepage": "https://www.electronjs.org",
+  "build": {
+    "productName": "股票助手",
+    "appId": "com.example.app",
+    "directories": {
+      "output": "dist"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./resources/Install.ico",
+      "uninstallerIcon": "./resources/bomber.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "menuCategory": true,
+      "shortcutName": "股票助手"
+    },
+    "win": {
+      "icon": "./resources/ball.png",
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
+  },
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint . --ext .js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",

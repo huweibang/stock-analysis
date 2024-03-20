@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Checkbox, Form, Radio } from 'antd';
 import "@/assets/styles/Setting.scss"
 
-// @ts-ignore
 const fs = window.api.moduleFs();
 
 const Setting: React.FC = () => {
@@ -26,7 +25,6 @@ const Setting: React.FC = () => {
 
             // 判断是否存在closeTray
             if (changedValues.hasOwnProperty('closeTray')) {
-                // @ts-ignore
                 window.api.windowSetClose();
                 settingData.closeTray = changedValues.closeTray
             }

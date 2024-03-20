@@ -61,17 +61,16 @@ const MenuNav: React.FC = () => {
         setKeyPath(currentRoute)
     })
 
-    // @ts-ignore
-    // window.api.getWindowInfo((width: number) => {
-    //     width > 500 ? setCollapsed(false) : setCollapsed(true)
-    //     if (width < 500) {
-    //         setMainWidth(70)
-    //     } else if (500 < width && width < 850) {
-    //         setMainWidth(180)
-    //     } else {
-    //         setMainWidth(256)
-    //     }
-    // });
+    window.api.getWindowInfo((width: number) => {
+        width > 500 ? setCollapsed(false) : setCollapsed(true)
+        if (width < 500) {
+            setMainWidth(70)
+        } else if (500 < width && width < 850) {
+            setMainWidth(180)
+        } else {
+            setMainWidth(256)
+        }
+    });
 
     const onSelect = ({ key }) => {
         navigate(key);
