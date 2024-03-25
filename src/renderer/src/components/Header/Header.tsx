@@ -191,10 +191,10 @@ const Header: React.FC = () => {
                                         setIkey(ikey);
                                         setData([]);
                                         setIsTable(false);
-                                        
+
                                         const fs = window.api.moduleFs();
                                         // 先读取stock.txt里的数据
-                                        fs.readFile("./stock.txt", "utf8", (err, data) => {
+                                        fs.readFile(localStorage.stockUrl, "utf8", (err, data) => {
                                             if (err) {
                                                 console.log("读取失败");
                                             } else {
@@ -212,7 +212,7 @@ const Header: React.FC = () => {
                                                     name: row.name,
                                                     api_code: row.api_code
                                                 });
-                                                fs.writeFile("./stock.txt", JSON.stringify(arr), err => {
+                                                fs.writeFile(localStorage.stockUrl, JSON.stringify(arr), err => {
                                                     if (err) {
                                                         messageApi.open({
                                                             type: 'error',

@@ -46,18 +46,11 @@ export const get = (url, params, baseURL, delay = 864000000) => {
             baseURL
         }).then(res => {
             resolve(res);
-            // const flag = stockFlag();
+            const flag = stockFlag();
             // 判断股市是否开盘，开盘就轮询继续请求
             // 设置延迟后再次发起请求  
-            true ? setTimeout(() => get(url, params, baseURL), delay) : null 
+            flag ? setTimeout(() => get(url, params, baseURL), delay) : null 
         }).catch(err => {
-            // if(err.request.status) {
-            //     switch(err.request.status) {
-            //         case 429: 
-            //             setTimeout(() => get(url, params), 1000)
-            //             break;
-            //     }
-            // }
             reject(err);
             const flag = stockFlag(); 
             flag ? setTimeout(() => get(url, params, baseURL), 1000) : null;

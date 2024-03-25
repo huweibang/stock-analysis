@@ -28,7 +28,7 @@ const Optional: React.FC = () => {
         const MAX_RETRIES = 3; // 最大重试次数  
         const RETRY_DELAY = 1000; // 重试间隔（毫秒）
 
-        fs.readFile("./stock.txt", "utf8", async (err, data) => {
+        fs.readFile(localStorage.stockUrl, "utf8", async (err, data) => {
             if (err) {
                 messageApi.open({
                     type: 'error',
@@ -68,13 +68,13 @@ const Optional: React.FC = () => {
 
     // 监听文件变化
     const listen = () => {
-        fs.watch("./stock.txt", debouncedHandler)
+        fs.watch(localStorage.stockUrl, debouncedHandler)
     }
 
     const debouncedHandler = debounce((eventType: string, filename: string) => {
         if (eventType == "change" && filename) {
             if (localStorage.isUpData == 1) {
-                fs.readFile("./stock.txt", "utf8", async (err, data) => {
+                fs.readFile(localStorage.stockUrl, "utf8", async (err, data) => {
                     if (err) { console.log("读取失败"); return };
                     localStorage.isUpData = 0;
                     const lastItem = JSON.parse(data)[JSON.parse(data).length - 1];
@@ -101,7 +101,7 @@ const Optional: React.FC = () => {
 
         // 清除函数，用于在组件卸载时停止监视  
         return () => {
-            fs.unwatchFile("./stock.txt", debouncedHandler);
+            fs.unwatchFile(localStorage.stockUrl, debouncedHandler);
         };
     }, [])
 

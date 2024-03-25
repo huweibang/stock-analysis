@@ -13,6 +13,12 @@ const mainWindow = {
 }
 // 主窗口
 const createMainWindow = () => {
+	let logo = "";
+	if(process.env['NODE_ENV'] == "development") {
+		logo = "resources/icon.png"
+	} else {
+		logo = join(__dirname, "../../resources/icon.png")
+	}
 	// 主窗口
 	mainWindow.winObj = new BrowserWindow({
 		frame: false,  //设置为 false 时可以创建一个无边框窗口 默认值为 true
@@ -21,16 +27,27 @@ const createMainWindow = () => {
 		height: 680,
 		show: false,
 		autoHideMenuBar: true,
-		icon: "resources/icon.png",
+		icon: logo,
 		// ...(process.platform === 'linux' ? { icon } : {}),
 		webPreferences: {
+			devTools: true,
 			preload: join(__dirname, '../preload/index.js'),
 			sandbox: false,
 			nodeIntegration: true,   //允许渲染进程使用node.js
-            contextIsolation: false  //允许渲染进程使用node.js
+            contextIsolation: false,  //允许渲染进程使用node.js
+			allowLocalAccessFromFileURLs: true
 		}
 	})
-
+	// if (process.env.WEBPACK_DEV_SERVER_URL) {
+	// 	// dev环境
+	// 	win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+	// 	win.webContents.openDevTools()
+	// } else {
+	// 	// 打包环境
+	// 	createProtocol('app')
+	// 	win.loadURL(`file://${__dirname}/index.html`);
+	// }
+	mainWindow.winObj.openDevTools();
 	// 确保窗口内容已经准备就绪后再显示窗口
 	mainWindow.winObj.on('ready-to-show', () => {
         showMainWindow();
@@ -86,7 +103,14 @@ const init = () => {
 	
 	// 设置关闭程序行为
 	ipcMain.on('change-allowQuitting', () => {
-		fs.readFile("./setting.json", "utf8", (err, data) => {
+		let url = ""
+		if(process.env['NODE_ENV'] == "development") {
+			url = "./setting.json"
+		} else {
+			url = join(__dirname, "../../setting.json")
+		}
+
+		fs.readFile(url, "utf8", (err, data) => {
 			let settingData = JSON.parse(data);
 			settingData.closeTray ? mainWindow.allowQuitting = false : mainWindow.allowQuitting = true
 		})
@@ -94,19 +118,18 @@ const init = () => {
 
 	// 创建右下角任务栏图标
 	appTray = new Tray(join(__dirname, 'icons', '../../../resources/stocks.ico'))
-
 	// 自定义托盘图标的内容菜单
 	const contextMenu = Menu.buildFromTemplate([
 		{
 			label: "打开助手",
-			icon: "resources/file-open.png",
+			icon: join(__dirname, "../../resources/file-open.png"),
 			click: () => {
 				showMainWindow();
 			}
 		},
 		{
 			label: "设置",
-			icon: "resources/setting.png",
+			icon: join(__dirname, "../../resources/setting.png"),
 			click: () => {
 				showMainWindow();
 				mainWindow.winObj.loadURL(process.env['ELECTRON_RENDERER_URL'] + '/Setting')
@@ -114,7 +137,7 @@ const init = () => {
 		},
 		{
 			label: "退出",
-			icon: "resources/sign-out.png",
+			icon: join(__dirname, "../../resources/sign-out.png"),
 			click: () => {
 				if(mainWindow.winObj != null)  mainWindow.winObj.destroy()
 				app.quit();

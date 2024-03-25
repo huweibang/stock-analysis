@@ -6,8 +6,18 @@ import './assets/styles/App.scss'
 import Header from './components/Header/Header';
 import MenuNav from './components/MenuNav/MenuNav';
 
+const path = window.api.moduleJoin();
 const fs = window.api.moduleFs();
-fs.readFile("./setting.json", "utf8", (err, data) => {
+
+if(process.env['NODE_ENV'] == "development") {
+	localStorage.stockUrl = "./stock.txt";
+	localStorage.settingUrl = "./setting.json";
+} else {
+	localStorage.stockUrl = path.join(__dirname, "../../stock.txt");
+	localStorage.settingUrl = path.join(__dirname, "../../setting.json");
+}
+
+fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
 	if (err) { console.log("读取失败"); return };
 	const settingData = JSON.parse(data);
 	if(settingData.riseFall == "fall") {

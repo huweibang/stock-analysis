@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer, shell } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import fs from "fs"
+import path from 'path'
 
 // Custom APIs for renderer
 const api = {
@@ -29,6 +30,10 @@ const api = {
 	},
 	moduleShell: () => {
 		const result = shell
+		return result
+	},
+	moduleJoin: () => {
+		const result = path
 		return result
 	}
 }

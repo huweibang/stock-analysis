@@ -11,4 +11,5 @@ export interface ApiInterface {
     windowSetClose: () => void;  
     moduleFs: () => typeof fs;  
     moduleShell: () => typeof shell;  
+    moduleJoin: () => typeof joinPath;  
 }

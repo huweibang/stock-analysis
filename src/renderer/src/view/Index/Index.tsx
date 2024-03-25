@@ -31,6 +31,7 @@ interface indexType {
     zf: string; // 涨幅%
 }
 
+const shell = window.api.moduleShell();
 // 定义首页指数
 const definitionList = ['上证指数', '深证成指', '北证50', '创业板指', '科创50', '沪深300'];
 
@@ -55,9 +56,6 @@ const stockIndexList = (data: indexType[]) => {
         </Col>
     )
 }
-
-// @ts-ignore
-const shell = window.api.moduleShell();
 
 const items: MenuProps['items'] = [
     {

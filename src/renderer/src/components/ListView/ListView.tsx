@@ -88,12 +88,12 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                     await dataSource.splice(index, 1);
                     await setDataSource(dataSource);
 
-                    fs.readFile("./stock.txt", "utf8", (err, data) => {
+                    fs.readFile(localStorage.stockUrl, "utf8", (err, data) => {
                         if (err) { console.log("读取失败"); return };
                         let arr = JSON.parse(data);
                         arr.splice(index, 1)
 
-                        fs.writeFile("./stock.txt", JSON.stringify(arr), err => {
+                        fs.writeFile(localStorage.stockUrl, JSON.stringify(arr), err => {
                             if (err) { console.log("写入失败"); return };
                             messageApi.open({
                                 type: 'success',
@@ -182,10 +182,10 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                 const overIndex = prev.findIndex((i) => i.key === over?.id);
                 const newArray = arrayMove(prev, activeIndex, overIndex);
 
-                if(getMoveList) {
+                if (getMoveList) {
                     getMoveList(newArray);
                 }
-                
+
                 if (isDrop) {
                     let arr = []
                     newArray.forEach(item => {
@@ -195,7 +195,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                         })
                     })
 
-                    fs.writeFile("./stock.txt", JSON.stringify(arr), err => {
+                    fs.writeFile(localStorage.stockUrl, JSON.stringify(arr), err => {
                         if (err) {
                             return
                         }

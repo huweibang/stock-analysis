@@ -3,13 +3,11 @@ import { Checkbox, Form, Radio } from 'antd';
 import "@/assets/styles/Setting.scss"
 
 const fs = window.api.moduleFs();
-
 const Setting: React.FC = () => {
     const [form] = Form.useForm();
     const [initDatas] = useState({});
-
     useEffect(() => {
-        fs.readFile("./setting.json", "utf8", (err, data) => {
+        fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
             if (err) { console.log("读取失败"); return };
             const settingData = JSON.parse(data);
             form.setFieldsValue(settingData);
@@ -19,7 +17,7 @@ const Setting: React.FC = () => {
 
     // 字段值更新时触发回调
     const valueChange = (changedValues) => {
-        fs.readFile("./setting.json", "utf8", (err, data) => {
+        fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
             if (err) { console.log("读取失败"); return };
             let settingData = JSON.parse(data);
 
@@ -48,7 +46,7 @@ const Setting: React.FC = () => {
                 settingData.riseFall = changedValues.riseFall
             }
 
-            fs.writeFile("./setting.json", JSON.stringify(settingData), err => {
+            fs.writeFile(localStorage.settingUrl, JSON.stringify(settingData), err => {
                 if (err) { console.log("写入失败"); return };
             })
         })
@@ -57,6 +55,7 @@ const Setting: React.FC = () => {
     
     return (
         <div className='set-box'>
+            <div>{localStorage.settingUrl}</div>
             <Form
                 className='set-form'
                 name="basic"

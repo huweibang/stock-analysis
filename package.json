@@ -15,15 +15,15 @@
       "oneClick": false,
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
-      "installerIcon": "./resources/Install.ico",
-      "uninstallerIcon": "./resources/bomber.ico",
+      "installerIcon": "./resources/stocksApp.ico",
+      "uninstallerIcon": "./resources/del.ico",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "menuCategory": true,
       "shortcutName": "股票助手"
     },
     "win": {
-      "icon": "./resources/ball.png",
+      "icon": "./resources/stocksApp.ico",
       "target": [
         "nsis",
         "zip"
