@@ -1,8 +1,7 @@
 import { get } from '@/api/axios'
 
 // 麦蕊智数licence
-const licence = 'aa43656c35008536b3'
-// 4c45e6480502b27048
+const licence = '56f631a5d86878eef0'
 
 // 麦蕊智数
 // 获取所有股票（5000+只股）
@@ -28,4 +27,4 @@ export const boomStock = (d, p) => get(`/hslt/zbgc/${d}/${licence}`, p, '/mapi',
 // 查询所有A股股票数据，包括股票名称、股票代码
 export const getBaseAll = (p) => get(`/v1/base/all`, p, '/sapi')
 // 查询所有A股股票历史日线，周线，月线行情，数据都是前复权的
-export const getBaseDay = (p) => get(`/v1/base/day`, p, '/sapi')
+export const getMin = (p) => get(`/v1/base/second`, p, '/sapi')

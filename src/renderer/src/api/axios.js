@@ -1,10 +1,7 @@
 import axios from "axios";
-import { stockFlag } from "@/utils/index"
+// import { stockFlag } from "@/utils/index"
 
-let prefixUrl = process.env['ELECTRON_RENDERER_URL'];
-if (process.env.NODE_ENV === 'production') {
-    prefixUrl = 'http://api.mairui.club/'
-}
+let prefixUrl = process.env['ELECTRON_RENDERER_URL']
 // 创建axios实例
 let instance = axios.create({
     baseURL: prefixUrl,
@@ -13,6 +10,13 @@ let instance = axios.create({
 
 // http 请求拦截器
 instance.interceptors.request.use(req => {
+    if (process.env.NODE_ENV === 'production') {
+        if (req.baseURL.slice(-5) == "/sapi") {
+            prefixUrl = 'https://stockapi.com.cn'
+        }  else {
+            prefixUrl = 'http://api.mairui.club'
+        }
+    }
     console.log(req)
     // 请求前
     req.headers["content-type"] = "application/json;charset=UTF-8"; // 默认类型
@@ -50,14 +54,10 @@ export const get = (url, params, suffix, delay = 864000000) => {
             baseURL: prefixUrl + suffix
         }).then(res => {
             resolve(res);
-            const flag = stockFlag();
-            // 判断股市是否开盘，开盘就轮询继续请求
-            // 设置延迟后再次发起请求  
-            flag ? setTimeout(() => get(url, params, baseURL), delay) : null
         }).catch(err => {
             reject(err);
-            const flag = stockFlag();
-            flag ? setTimeout(() => get(url, params, baseURL), 1000) : null;
+            // const flag = stockFlag();
+            // flag ? setTimeout(() => get(url, params, baseURL), 1000) : null;
         })
     });
 }

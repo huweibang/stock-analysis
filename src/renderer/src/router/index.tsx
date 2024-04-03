@@ -61,7 +61,7 @@ const pages :RouteObject[] = [
     {
         path: '/Tactics',
         label: "策略",
-        hidden: true,
+        hidden: false,
         element: <Tactics />,
         icon: <ProductOutlined />
     },
