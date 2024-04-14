@@ -17,11 +17,8 @@ instance.interceptors.request.use(req => {
             prefixUrl = 'http://api.mairui.club'
         }
     }
-    console.log(req)
     // 请求前
     req.headers["content-type"] = "application/json;charset=UTF-8"; // 默认类型
-    // req.headers["Cache-Control'"] = "no-cache";
-    // req.headers["Pragma'"] = "no-cache";
 
     if (req.baseURL.slice(-5) == "/sapi") {
         req.url += "?token=097c5ec77813d4077138be3288537d97364e921235175234"
@@ -61,22 +58,5 @@ export const get = (url, params, suffix, delay = 864000000) => {
         })
     });
 }
-
-/** 
- * post方法，对应post请求 
- * @param {String} url [请求的url地址] 
- * @param {Object} params [请求时携带的参数] 
- */
-// export function post(url, params) {
-//     return new Promise((resolve, reject) => {
-//         axios.post(url, QS.stringify(params))
-//             .then(res => {
-//                 resolve(res.data);
-//             })
-//             .catch(err => {
-//                 reject(err.data)
-//             })
-//     });
-// }
 
 export default instance

@@ -4,7 +4,6 @@ import {
     AlignLeftOutlined,
     ProductOutlined,
     SettingOutlined,
-    BorderOuterOutlined
 } from '@ant-design/icons';
 import NotFound from "@/components/NotFound/NotFound";
 import Index from "../view/Index/Index";
@@ -71,26 +70,7 @@ const pages :RouteObject[] = [
         hidden: false,
         element: <Setting />,
         icon: <SettingOutlined />
-    },
-    {
-        path: '/Test',
-        label: "测试",
-        icon: <BorderOuterOutlined />,
-        children: [
-            {
-                path: '/Test/Test1',
-                label: "测试页1",
-                hidden: false,
-                element: <Test1 />
-            },
-            {
-                path: '/Test/Test2',
-                label: "测试页2",
-                hidden: false,
-                element: <Test2 />
-            }
-        ]
-    },
+    }
 ];
 
 export default pages;

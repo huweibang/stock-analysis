@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Checkbox, Form, Radio } from 'antd';
+import { Checkbox, Form, Radio, Input, Button, Space, message } from 'antd';
 import "@/assets/styles/Setting.scss"
 
 const fs = window.api.moduleFs();
 const Setting: React.FC = () => {
     const [form] = Form.useForm();
     const [initDatas] = useState({});
+    const [code, setCode] = useState("");
+    const [messageApi, contextHolder] = message.useMessage();
+
     useEffect(() => {
         fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
             if (err) { console.log("读取失败"); return };
@@ -46,16 +49,35 @@ const Setting: React.FC = () => {
                 settingData.riseFall = changedValues.riseFall
             }
 
+            if (changedValues.hasOwnProperty('licenceCode')) {
+                setCode(changedValues.licenceCode)
+            }
+
             fs.writeFile(localStorage.settingUrl, JSON.stringify(settingData), err => {
                 if (err) { console.log("写入失败"); return };
             })
         })
     }
 
-    
+    const save = () => {
+        fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
+            if (err) { console.log("读取失败"); return };
+            let settingData = JSON.parse(data);
+            settingData.licenceCode = code;
+
+            fs.writeFile(localStorage.settingUrl, JSON.stringify(settingData), err => {
+                if (err) { console.log("写入失败"); return };
+                messageApi.open({
+                    type: 'success',
+                    content: '保存成功！',
+                });
+            })
+        })
+    }
+
     return (
         <div className='set-box'>
-            <div>{localStorage.settingUrl}</div>
+            {contextHolder}
             <Form
                 className='set-form'
                 name="basic"
@@ -75,6 +97,19 @@ const Setting: React.FC = () => {
                         <Radio value="rise">红涨绿跌</Radio>
                         <Radio value="fall">绿涨红跌</Radio>
                     </Radio.Group>
+                </Form.Item>
+                <p className='set-box-title'>请求设置</p>
+                <Form.Item
+                    label="请输入你的licence"
+                    name="licenceCode"
+                    wrapperCol={{ span: 16 }}
+                >
+                    <div className='flex-box'>
+                        <Space>
+                            <Input />
+                            <Button type="primary" onClick={save}>保存</Button>
+                        </Space>
+                    </div>
                 </Form.Item>
                 <p className='set-box-title'>系统设置</p>
                 <Form.Item

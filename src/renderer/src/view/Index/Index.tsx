@@ -57,24 +57,29 @@ const stockIndexList = (data: indexType[]) => {
     )
 }
 
-const items: MenuProps['items'] = [
-    {
-        label: "详情",
-        key: '0',
-        onClick: () => {
-            // 打开浏览器页面查看详情
-            shell.openExternal('https://www.baidu.com');
-        }
-    },
-]
 
 // 渲染池子股票列表
 const poolStockList = (data: indexType[]) => {
+    let code: string = "";
+
+    const items: MenuProps['items'] = [
+        {
+            label: "详情",
+            key: '0',
+            onClick: () => {
+                // 打开浏览器页面查看详情
+                shell.openExternal(`https://quote.eastmoney.com/${code}.html`);
+            }
+        },
+    ]
+
     return <List
         dataSource={data}
         renderItem={(item: { mc: string; dm: string; zf: any; p: number; }) => (
-            <List.Item>
-                <Dropdown menu={{ items }} trigger={['contextMenu']}>
+            <List.Item onClick={() => console.log(item)}>
+                <Dropdown menu={{ items }} trigger={['contextMenu']} onOpenChange={() => {
+                    code = item.dm
+                }}>
                     <div className="pool-list">
                         <div className="pool-left">
                             <span>{item.mc}</span>

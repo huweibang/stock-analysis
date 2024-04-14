@@ -15,7 +15,7 @@ import type { ColumnsType } from 'antd/es/table';
 import "@/assets/styles/ListView.scss"
 import { useContext } from 'react';
 import { ParentContext } from '@/utils/context';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 interface DataType {
     zf: string;
@@ -64,7 +64,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [index, setIndex] = useState<number>(0);
     // 定义跳转
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     useEffect(() => {
         data != null ? setDataSource(data) : [];
@@ -76,7 +76,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
             key: '0',
             onClick: () => {
                 // 打开浏览器页面查看详情
-                shell.openExternal('https://www.baidu.com');
+                shell.openExternal(`https://quote.eastmoney.com/${dataSource[index].api_code}.html`);
             }
         },
         isDrop ? {
