@@ -3,27 +3,27 @@ import { get } from '@/api/axios'
 const fs = window.api.moduleFs();
 const path = window.api.moduleJoin();
 // 麦蕊智数licence
-// const licence = '56f631a5d86878eef0'
+const licence = '56f631a5d86878eef0'
 // const licence = '8ba901372c1638889'
-let licence;
-if(process.env['NODE_ENV'] == "development") {
-	localStorage.settingUrl = "./setting.json";
-} else {
-	localStorage.settingUrl = path.join(__dirname, "../../setting.json");
-}
+// let licence;
+// if(process.env['NODE_ENV'] == "development") {
+// 	localStorage.settingUrl = "./setting.json";
+// } else {
+// 	localStorage.settingUrl = path.join(__dirname, "../../setting.json");
+// }
 
-fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
-    const settingData = JSON.parse(data);
-    console.log(settingData)
-    licence = settingData.licenceCode
-})
-// 监听文件变化
-fs.watch(localStorage.settingUrl, () => {
-    fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
-        const settingData = JSON.parse(data);
-        licence = settingData.licenceCode
-    })
-})
+// fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
+//     const settingData = JSON.parse(data);
+//     console.log(settingData)
+//     licence = settingData.licenceCode
+// })
+// // 监听文件变化
+// fs.watch(localStorage.settingUrl, () => {
+//     fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
+//         const settingData = JSON.parse(data);
+//         licence = settingData.licenceCode
+//     })
+// })
 
 // 麦蕊智数
 // 获取所有股票（5000+只股）

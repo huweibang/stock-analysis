@@ -10,6 +10,7 @@ let instance = axios.create({
 
 // http 请求拦截器
 instance.interceptors.request.use(req => {
+    console.log(req)
     if (process.env.NODE_ENV === 'production') {
         if (req.baseURL.slice(-5) == "/sapi") {
             prefixUrl = 'https://stockapi.com.cn'

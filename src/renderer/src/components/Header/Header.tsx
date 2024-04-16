@@ -53,12 +53,12 @@ const columns: TableProps<DataType>['columns'] = [
 
 let allStockList: DataType[] = [];
 
-const getStockList = async () => {
-    const res = await getBaseAll();
-    res.data.map((item, index) => item.key = index.toString());
-    allStockList = res.data;
-}
-getStockList();
+// const getStockList = async () => {
+//     const res = await getBaseAll();
+//     res.data.map((item, index) => item.key = index.toString());
+//     allStockList = res.data;
+// }
+// getStockList();
 
 const Header: React.FC = () => {
     const [open, setOpen] = useState(false);

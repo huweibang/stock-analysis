@@ -215,13 +215,18 @@ const Index: React.FC = () => {
         });
     }
 
-    useEffect(() => {
+    const execute = () => {
         initIndexList();
         getLimitUp();
         getLimitDown();
         getMightyList();
         getNextNewList();
         getBoomStockList();
+        return execute;
+    }
+
+    useEffect(() => {
+        setInterval(execute(), 60000)
     }, [])
 
     return (
