@@ -10,7 +10,9 @@ import Index from "../view/Index/Index";
 import Operation from "../view/Stocks/Optional";
 import StockList from "../view/Stocks/StockList";
 import StockDetail from "../view/Stocks/StockDetail";
-import Tactics from "../view/Tactics/Tactics";
+import Kline from "../view/Tactics/Kline";
+import Reference from "../view/Tactics/Reference";
+import Institution from "../view/Tactics/Institution";
 import Setting from "../view/Setting/Setting";
 import Test1 from "../view/Test/Test1/Test1";
 import Test2 from "../view/Test/Test2/Test2";
@@ -58,11 +60,26 @@ const pages :RouteObject[] = [
         element: <StockDetail />,
     },
     {
-        path: '/Tactics',
         label: "策略",
         hidden: false,
-        element: <Tactics />,
-        icon: <ProductOutlined />
+        icon: <ProductOutlined />,
+        children: [
+            {
+                path: "/Tactics/Kline",
+                label: "K线分析",
+                element: <Kline />,
+            },
+            {
+                path: "/Tactics/Reference",
+                label: "交易提示",
+                element: <Reference />,
+            },
+            {
+                path: "/Tactics/Institution",
+                label: "机构持仓",
+                element: <Institution />,
+            }
+        ]
     },
     {
         path: '/Setting',

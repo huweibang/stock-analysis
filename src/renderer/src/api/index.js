@@ -3,8 +3,9 @@ import { get } from '@/api/axios'
 const fs = window.api.moduleFs();
 const path = window.api.moduleJoin();
 // 麦蕊智数licence
-const licence = '56f631a5d86878eef0'
+// const licence = '56f631a5d86878eef0'
 // const licence = '8ba901372c1638889'
+const licence = '3b931883716162366f'
 // let licence;
 // if(process.env['NODE_ENV'] == "development") {
 // 	localStorage.settingUrl = "./setting.json";
@@ -44,6 +45,12 @@ export const mighty = (d, p) => get(`/hslt/qsgc/${d}/${licence}`, p, '/mapi', 60
 export const nextNew = (d, p) => get(`/hslt/cxgc/${d}/${licence}`, p, '/mapi', 600000)
 // 炸板股池
 export const boomStock = (d, p) => get(`/hslt/zbgc/${d}/${licence}`, p, '/mapi', 600000)
+// 今日交易提示
+export const prompt = (p) => get(`/hitc/jrts/${licence}`, p, '/mapi', 600000)
+// 机构持股汇总
+export const institutionCollect = (y, q, p) => get(`/hijg/jgcghz/${y}/${q}/${licence}`, p, '/mapi', 600000)
+// 基金重仓
+export const jijiHeavy = (y, q, p) => get(`/hijg/jj/${y}/${q}/${licence}`, p, '/mapi', 600000)
 
 // stockApi
 // 查询所有A股股票数据，包括股票名称、股票代码

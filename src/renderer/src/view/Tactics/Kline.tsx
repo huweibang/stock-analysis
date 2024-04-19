@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Radio, Collapse } from 'antd';
 import type { RadioChangeEvent, CollapseProps } from 'antd';
 import "@/assets/styles/Tactics.scss"
-import { upList } from "./up"
-import { downList } from "./down"
-import { otherList } from "./other"
+import { upList } from "@/utils/up"
+import { downList } from "@/utils/down"
+import { otherList } from "@/utils/other"
 
 const optionsWithDisabled = [
     { label: '看涨K线', value: '1' },

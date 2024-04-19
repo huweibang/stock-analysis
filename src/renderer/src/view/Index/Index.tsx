@@ -226,7 +226,8 @@ const Index: React.FC = () => {
     }
 
     useEffect(() => {
-        setInterval(execute(), 60000)
+        // setInterval(execute(), 60000)
+        execute()
     }, [])
 
     return (
