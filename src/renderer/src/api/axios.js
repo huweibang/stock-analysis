@@ -10,7 +10,6 @@ let instance = axios.create({
 
 // http 请求拦截器
 instance.interceptors.request.use(req => {
-    console.log(req)
     if (process.env.NODE_ENV === 'production') {
         if (req.baseURL.slice(-5) == "/sapi") {
             prefixUrl = 'https://stockapi.com.cn'
@@ -43,9 +42,8 @@ instance.interceptors.response.use(req => {
  * 封装get方法 仅在开盘日发起长轮询
  * @param {String} url [请求的url地址]
  * @param {Object} params [请求时携带的参数]
- * @param {number} delay [864000000 = 10天]
  */
-export const get = (url, params, suffix, delay = 864000000) => {
+export const get = (url, params, suffix) => {
     return new Promise((resolve, reject) => {
         instance.get(url, {
             params: params,
@@ -54,8 +52,6 @@ export const get = (url, params, suffix, delay = 864000000) => {
             resolve(res);
         }).catch(err => {
             reject(err);
-            // const flag = stockFlag();
-            // flag ? setTimeout(() => get(url, params, baseURL), 1000) : null;
         })
     });
 }

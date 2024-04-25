@@ -102,18 +102,18 @@ const init = () => {
 	})
 	
 	// 设置关闭程序行为
+    const url = join(__dirname, "../../setting.txt");
+    fs.readFile(url, "utf8", (err, data) => {
+        let settingData = JSON.parse(data);
+        settingData.closeTray ? mainWindow.allowQuitting = false : mainWindow.allowQuitting = true
+    })
 	ipcMain.on('change-allowQuitting', () => {
-		let url = ""
-		if(process.env['NODE_ENV'] == "development") {
-			url = "./setting.json"
-		} else {
-			url = join(__dirname, "../../setting.json")
-		}
-
-		fs.readFile(url, "utf8", (err, data) => {
-			let settingData = JSON.parse(data);
-			settingData.closeTray ? mainWindow.allowQuitting = false : mainWindow.allowQuitting = true
-		})
+        setTimeout(() => {
+            fs.readFile(url, "utf8", (err, data) => {
+                let settingData = JSON.parse(data);
+                settingData.closeTray ? mainWindow.allowQuitting = false : mainWindow.allowQuitting = true
+            })
+        }, 800)
 	})
 
 	// 创建右下角任务栏图标
@@ -131,8 +131,10 @@ const init = () => {
 			label: "设置",
 			icon: join(__dirname, "../../resources/setting.png"),
 			click: () => {
-				showMainWindow();
-				mainWindow.winObj.loadURL(process.env['ELECTRON_RENDERER_URL'] + '/Setting')
+				// showMainWindow();
+                // mainWindow.winObj.webContents.send('route-change', route);
+				// mainWindow.winObj.loadURL(process.env['ELECTRON_RENDERER_URL'] + '/Setting')
+                openRoute('/Setting');
 			}
 		},
 		{
@@ -153,7 +155,14 @@ const init = () => {
 		if(!mainWindow.isShow) showMainWindow();
 	})
 }
-
+// 切换路由
+const openRoute = (route) => {
+    showMainWindow();
+    mainWindow.winObj.send('route-change', route);
+    // 确保窗口是可见的并聚焦
+    mainWindow.winObj.show();
+    mainWindow.winObj.focus();
+};
 // 隐藏主窗口
 const hideMainWindow = () => {
 	if (mainWindow.winObj && !mainWindow.winObj.isDestroyed()) {

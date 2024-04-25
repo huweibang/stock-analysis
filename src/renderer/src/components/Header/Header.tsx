@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import type { DrawerProps, TableProps } from 'antd';
 import { Divider, Drawer, Flex, Input, Tooltip, Table, Tag, message } from 'antd';
-import { getBaseAll } from '@/api/index';
+import { getBaseAll, getHsltList } from '@/api/index';
 import { debounce } from '@/utils/index'
 import "@/assets/styles/Header.scss";
 
@@ -31,9 +31,9 @@ const columns: TableProps<DataType>['columns'] = [
         key: 'jys',
         width: 70,
         render: (_, { jys }) => {
-            if (jys == "SH") {
+            if (jys == "sh") {
                 return <Tag color="orange">上证</Tag>
-            } else if (jys == "SZ") {
+            } else if (jys == "sz") {
                 return <Tag color="orange">深证</Tag>
             }
         },
@@ -53,12 +53,17 @@ const columns: TableProps<DataType>['columns'] = [
 
 let allStockList: DataType[] = [];
 
-// const getStockList = async () => {
-//     const res = await getBaseAll();
-//     res.data.map((item, index) => item.key = index.toString());
-//     allStockList = res.data;
-// }
-// getStockList();
+const getStockList = async () => {
+    const res = await getHsltList();
+    res.map((item, index) => {
+        item.key = index.toString()
+        item.name = item.mc;
+        item.api_code = item.dm;
+    });
+    allStockList = res;
+    console.log(allStockList)
+}
+getStockList();
 
 const Header: React.FC = () => {
     const [open, setOpen] = useState(false);

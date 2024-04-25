@@ -1,0 +1,1 @@
+{"riseFall":"rise","licenceCode":"4","closeTray":true}

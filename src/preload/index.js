@@ -11,6 +11,12 @@ const api = {
 			callback(args.width, args.height);
 		})
 	},
+    // 获取需要跳转的路由
+    getRouterLink: (callback) => {
+        ipcRenderer.on('route-change', (event, route) => {
+			callback(route);
+		})
+    },
 	// 窗口置顶
 	windowTop: () => {
 		ipcRenderer.send("window-top")

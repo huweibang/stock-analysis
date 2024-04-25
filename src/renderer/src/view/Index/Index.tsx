@@ -10,7 +10,7 @@ import {
     nextNew,
     boomStock,
 } from '@/api/index'
-import { openEquityMarketDay } from "@/utils/index"
+import { stockFlag, openEquityMarketDay } from "@/utils/index"
 import {
     BarChartOutlined,
     SmileOutlined,
@@ -226,8 +226,8 @@ const Index: React.FC = () => {
     }
 
     useEffect(() => {
-        // setInterval(execute(), 60000)
-        execute()
+        const flag = stockFlag();
+        flag ? setInterval(execute(), 60000) : execute();
     }, [])
 
     return (

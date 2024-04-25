@@ -6,6 +6,7 @@ declare global {
 
 export interface ApiInterface {  
     getWindowInfo: (callback: (width: number, height: number) => void) => void;  
+    getRouterLink: (callback: (route) => any) => any;  
     windowTop: () => void;  
     windowMin: () => void;  
     windowSetClose: () => void;  

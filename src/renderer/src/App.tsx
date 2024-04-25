@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import pages from './router/index';
-import { Modal, Typography } from 'antd';
-import { Routes, Route, RouteObject } from 'react-router-dom';
+import { Modal } from 'antd';
+import { Routes, Route, RouteObject, useNavigate } from 'react-router-dom';
 import './assets/styles/App.scss'
 import Header from './components/Header/Header';
 import MenuNav from './components/MenuNav/MenuNav';
@@ -11,10 +11,10 @@ const fs = window.api.moduleFs();
 
 if(process.env['NODE_ENV'] == "development") {
 	localStorage.stockUrl = "./stock.txt";
-	localStorage.settingUrl = "./setting.json";
+	localStorage.settingUrl = "./setting.txt";
 } else {
 	localStorage.stockUrl = path.join(__dirname, "../../stock.txt");
-	localStorage.settingUrl = path.join(__dirname, "../../setting.json");
+	localStorage.settingUrl = path.join(__dirname, "../../setting.txt");
 }
 
 fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
@@ -56,8 +56,9 @@ const RouteItems = renderRouter(pages).map((item, index) =>
 );
 
 const App: React.FC = () => {
-	const { Text } = Typography;
 	const [isModalOpen, setIsModalOpen] = useState(true);
+    // 定义跳转
+    const navigate = useNavigate();
 
 	// 同意
 	const handleOk = () => {
@@ -68,6 +69,12 @@ const App: React.FC = () => {
 	const handleCancel = () => {
 		window.close();
 	}
+    
+    useEffect(() => {
+        window.api.getRouterLink((route) => {
+            navigate(route);
+        })
+    }, [])
 
 	return (
 		<div className='app'>
@@ -93,7 +100,8 @@ const App: React.FC = () => {
 				cancelText="我不同意以上内容"
 			>
 				<p>本产品初衷意在提供简单化的查看股票的方式，拒绝繁杂，让人眼花缭乱的数据。</p>
-				<p>本产品仅提供对股票的K线形态研究，例如：仙人指路，红三兵，穿头破脚等。但需注意，K线形态为民间流传，没有市场与官方认可，且每个人对K线形态理解不尽相同。在本产品中，任何的K线形态，<Text mark>仅代表本开发作者的想法</Text>，如有不对之处，请添加 <Text mark>wx: Hwbb_0</Text> 联系</p>
+				<p>本产品提供对股票的K线形态展示结果，和部分数据集合展示。</p>
+                <p>本产品不提供任何投资建议，炒股盈亏自负。 </p>
 			</Modal>
 		</div>
 	)

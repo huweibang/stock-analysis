@@ -4,7 +4,7 @@ import ListView from "@/components/ListView/ListView"
 import { getStockDetail } from '@/api/index'
 import { message } from "antd";
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { debounce } from '@/utils/index';
+import { stockFlag, debounce } from '@/utils/index';
 import { ParentContext } from '@/utils/context';
 
 interface DataType {
@@ -95,8 +95,15 @@ const Optional: React.FC = () => {
         }
     })
 
+    const execute = () => {
+        getList()
+        return execute;
+    }
+
     useEffect(() => {
-        getList();
+        const flag = stockFlag();
+        // 每30秒更新一次
+        flag ? setInterval(execute() , 30000) : execute();
         listen();
 
         // 清除函数，用于在组件卸载时停止监视  

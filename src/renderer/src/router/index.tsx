@@ -14,8 +14,6 @@ import Kline from "../view/Tactics/Kline";
 import Reference from "../view/Tactics/Reference";
 import Institution from "../view/Tactics/Institution";
 import Setting from "../view/Setting/Setting";
-import Test1 from "../view/Test/Test1/Test1";
-import Test2 from "../view/Test/Test2/Test2";
 
 type RouteObject = {
     label: string;
