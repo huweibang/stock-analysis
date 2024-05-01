@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Radio, Collapse } from 'antd';
 import type { RadioChangeEvent, CollapseProps } from 'antd';
-import "@/assets/styles/Tactics.scss"
+import "@/assets/styles/Dataset.scss"
 import { upList } from "@/utils/up"
 import { downList } from "@/utils/down"
 import { otherList } from "@/utils/other"
@@ -12,7 +12,7 @@ const optionsWithDisabled = [
     { label: '其他K线', value: '3' },
 ];
 
-const Tactics: React.FC = () => {
+const Dataset: React.FC = () => {
     const [val, setVal] = useState('1');
     const [items, setItems] = useState<CollapseProps['items']>([])
     const onChange = ({ target: { value } }: RadioChangeEvent) => {
@@ -69,4 +69,4 @@ const Tactics: React.FC = () => {
     )
 }
 
-export default Tactics
+export default Dataset

@@ -1,7 +1,7 @@
 import axios from "axios";
-// import { stockFlag } from "@/utils/index"
 
-let prefixUrl = process.env['ELECTRON_RENDERER_URL']
+let prefixUrl = process.env.NODE_ENV === 'production'? 'http://api.mairui.club' : process.env['ELECTRON_RENDERER_URL'];
+
 // 创建axios实例
 let instance = axios.create({
     baseURL: prefixUrl,
@@ -10,13 +10,13 @@ let instance = axios.create({
 
 // http 请求拦截器
 instance.interceptors.request.use(req => {
-    if (process.env.NODE_ENV === 'production') {
-        if (req.baseURL.slice(-5) == "/sapi") {
-            prefixUrl = 'https://stockapi.com.cn'
-        }  else {
-            prefixUrl = 'http://api.mairui.club'
-        }
-    }
+    // if (process.env.NODE_ENV === 'production') {
+    //     if (req.baseURL.slice(-5) == "/sapi") {
+    //         prefixUrl = 'https://stockapi.com.cn'
+    //     }  else {
+    //         prefixUrl = 'http://api.mairui.club'
+    //     }
+    // }
     // 请求前
     req.headers["content-type"] = "application/json;charset=UTF-8"; // 默认类型
 

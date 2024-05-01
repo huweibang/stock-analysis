@@ -3,12 +3,11 @@ import React, { useEffect, useState } from "react"
 import ListView from "@/components/ListView/ListView"
 import { getStockDetail } from '@/api/index'
 import { message } from "antd";
-import { UniqueIdentifier } from "@dnd-kit/core";
 import { stockFlag, debounce } from '@/utils/index';
 import { ParentContext } from '@/utils/context';
 
 interface DataType {
-    key: UniqueIdentifier;
+    key: string;
     mc: string;
     p: number;
     ud: string;
@@ -103,7 +102,8 @@ const Optional: React.FC = () => {
     useEffect(() => {
         const flag = stockFlag();
         // 每30秒更新一次
-        flag ? setInterval(execute() , 30000) : execute();
+        // flag ? setInterval(execute() , 30000) : execute();
+        getList();
         listen();
 
         // 清除函数，用于在组件卸载时停止监视  

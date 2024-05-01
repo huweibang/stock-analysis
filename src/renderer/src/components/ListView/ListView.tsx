@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Table, message, Dropdown } from 'antd';
+import { Table, message, Dropdown, Button } from 'antd';
 import type { MenuProps } from 'antd';
-import type { DragEndEvent, UniqueIdentifier } from '@dnd-kit/core';
+import type { DragEndEvent } from '@dnd-kit/core';
 import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import {
@@ -15,17 +15,21 @@ import type { ColumnsType } from 'antd/es/table';
 import "@/assets/styles/ListView.scss"
 import { useContext } from 'react';
 import { ParentContext } from '@/utils/context';
+import { MonitorOutlined } from '@ant-design/icons';
+import { HistoricalMa, HistoricalTimeDivision } from '@/api/index'
+import { calculate } from '@/utils/k-line-analysis'
 // import { useNavigate } from 'react-router-dom';
 
 interface DataType {
     zf: string;
-    key: UniqueIdentifier;
+    key: string;
     mc: string;
     p: number;
     pc: string;
     ud: string | number;
     id: string;
     api_code: string;
+    line: string;
 }
 // 定义props的类型 
 interface ListViewProps {
@@ -63,6 +67,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
     const [dataSource, setDataSource] = useState<DataType[]>([]);
     const [messageApi, contextHolder] = message.useMessage();
     const [index, setIndex] = useState<number>(0);
+    const [loadings, setLoadings] = useState<boolean[]>([]);
     // 定义跳转
     // const navigate = useNavigate();
 
@@ -107,10 +112,33 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
         } : null,
     ];
 
+    const enterLoading = async (item: DataType) => {
+        setLoadings((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[item.key] = true;
+            return newLoadings;
+        });
+
+        const obj = await HistoricalTimeDivision(item.api_code, "dq");
+        const res = await HistoricalMa(item.api_code, "dq");
+
+        const line = calculate(obj.splice(-14), res.splice(-14))
+        console.log(line)
+        item.line = line
+        if (line) {
+            setLoadings((prevLoadings) => {
+                const newLoadings = [...prevLoadings];
+                newLoadings[item.key] = false;
+                return newLoadings;
+            });
+        }
+    }
+
     const columns: ColumnsType<DataType> = [
         {
             title: '股票',
             dataIndex: 'mc',
+            width: 90,
             render: (_, record) => {
                 return <Dropdown menu={{ items }} trigger={['contextMenu']}>
                     <div className="item-spn">{record.mc}</div>
@@ -120,6 +148,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
         {
             title: '最新价',
             dataIndex: 'p',
+            width: 80,
             sortDirections: ['descend', 'ascend'], // 先降序，在升序
             sorter: (a, b) => a.p - b.p,
             render: (_, record) => {
@@ -134,6 +163,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
         {
             title: '涨幅',
             dataIndex: ['pc', 'zf'],
+            width: 80,
             sortDirections: ['descend', 'ascend'],
             sorter: (a, b) => Number(a.pc.replace("%", "")) - Number(b.pc.replace("%", "")),
             render: (_, record) => {
@@ -151,6 +181,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
         {
             title: '涨跌',
             dataIndex: 'ud',
+            width: 80,
             sortDirections: ['descend', 'ascend'],
             sorter: (a, b) => Number(a.ud) - Number(b.ud),
             render: (_, record) => {
@@ -165,6 +196,31 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                 </Dropdown>
             }
         },
+        {
+            title: '近10天相似K线分析',
+            dataIndex: 'line',
+            fixed: "right",
+            render: (_, record) => {
+                console.log(_)
+                console.log(record)
+                return <Dropdown menu={{ items }} trigger={['contextMenu']}>
+                    <div className='item-spn'>
+                        {
+                            _ ?
+                                <div>{_}</div> :
+                                <Button
+                                    size="small"
+                                    icon={<MonitorOutlined />}
+                                    loading={loadings[record.key]}
+                                    onClick={() => enterLoading(record)}
+                                >
+                                    分析K线形态
+                                </Button>
+                        }
+                    </div>
+                </Dropdown>
+            }
+        }
     ];
 
     const sensors = useSensors(
@@ -224,6 +280,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                             row: Row,
                         },
                     }}
+                    scroll={{ x: 470 }}
                     rowKey="key"
                     showSorterTooltip={false}
                     pagination={false}

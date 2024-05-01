@@ -4,15 +4,17 @@ import {
     AlignLeftOutlined,
     ProductOutlined,
     SettingOutlined,
+    ProjectOutlined
 } from '@ant-design/icons';
 import NotFound from "@/components/NotFound/NotFound";
 import Index from "../view/Index/Index";
 import Operation from "../view/Stocks/Optional";
 import StockList from "../view/Stocks/StockList";
 import StockDetail from "../view/Stocks/StockDetail";
-import Kline from "../view/Tactics/Kline";
-import Reference from "../view/Tactics/Reference";
-import Institution from "../view/Tactics/Institution";
+import Kline from "../view/Dataset/Kline";
+import Reference from "../view/Dataset/Reference";
+import Institution from "../view/Dataset/Institution";
+import Strategy from "../view/Strategy/Strategy"
 import Setting from "../view/Setting/Setting";
 
 type RouteObject = {
@@ -32,7 +34,7 @@ const pages :RouteObject[] = [
         element: <NotFound />,
     },
     {
-        path: "/",
+        path: "/Index/Index",
         label: "行情",
         hidden: false,
         element: <Index />,
@@ -63,21 +65,29 @@ const pages :RouteObject[] = [
         icon: <ProductOutlined />,
         children: [
             {
-                path: "/Tactics/Kline",
+                path: "/Dataset/Kline",
                 label: "K线分析",
                 element: <Kline />,
             },
             {
-                path: "/Tactics/Reference",
+                path: "/Dataset/Reference",
                 label: "交易提示",
                 element: <Reference />,
             },
             {
-                path: "/Tactics/Institution",
+                path: "/Dataset/Institution",
                 label: "机构持仓",
                 element: <Institution />,
             }
         ]
+    },
+    {
+        // path: '/Strategy/index',
+        path: '/',
+        label: "策略",
+        hidden: false,
+        element: <Strategy />,
+        icon: <ProjectOutlined />
     },
     {
         path: '/Setting',

@@ -1,30 +1,23 @@
 import { get } from '@/api/axios'
 
 const fs = window.api.moduleFs();
-const path = window.api.moduleJoin();
 // 麦蕊智数licence
 // const licence = '56f631a5d86878eef0'
 // const licence = '8ba901372c1638889'
-const licence = '3b931883716162366f'
-// let licence;
-// if(process.env['NODE_ENV'] == "development") {
-// 	localStorage.settingUrl = "./setting.txt";
-// } else {
-// 	localStorage.settingUrl = path.join(__dirname, "../../setting.txt");
-// }
+// const licence = '3b931883716162366f'
+let licence = "3b931883716162366f";
 
-// fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
-//     const settingData = JSON.parse(data);
-//     console.log(settingData)
-//     licence = settingData.licenceCode
-// })
-// // 监听文件变化
-// fs.watch(localStorage.settingUrl, () => {
-//     fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
-//         const settingData = JSON.parse(data);
-//         licence = settingData.licenceCode
-//     })
-// })
+fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
+    const settingData = JSON.parse(data);
+    licence = settingData.licenceCode
+})
+// 监听文件变化 
+fs.watch(localStorage.settingUrl, () => {
+    fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
+        const settingData = JSON.parse(data);
+        licence = settingData.licenceCode
+    })
+})
 
 // 麦蕊智数
 // 获取所有股票（5000+只股）
@@ -51,6 +44,10 @@ export const prompt = (p) => get(`/hitc/jrts/${licence}`, p, '/mapi')
 export const institutionCollect = (y, q, p) => get(`/hijg/jgcghz/${y}/${q}/${licence}`, p, '/mapi')
 // 基金重仓
 export const jijiHeavy = (y, q, p) => get(`/hijg/jj/${y}/${q}/${licence}`, p, '/mapi')
+// 历史分时MA(均线)
+export const HistoricalMa = (c, t, p) => get(`/hszbl/ma/${c}/${t}/${licence}`, p, '/mapi')
+// 历史分时交易
+export const HistoricalTimeDivision = (c, t, p) => get(`/hszbl/fsjy/${c}/${t}/${licence}`, p, '/mapi')
 
 // stockApi
 // 查询所有A股股票数据，包括股票名称、股票代码

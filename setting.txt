@@ -1,1 +1,1 @@
-{"riseFall":"rise","licenceCode":"4","closeTray":true}
+{"riseFall":"rise","licenceCode":"3b931883716162366f","closeTray":true}
