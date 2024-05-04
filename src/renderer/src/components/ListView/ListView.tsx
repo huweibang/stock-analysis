@@ -134,7 +134,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
         }
     }
 
-    const columns: ColumnsType<DataType> = [
+    const columns: ColumnsType<DataType> = isDrop ? [
         {
             title: '股票',
             dataIndex: 'mc',
@@ -219,7 +219,69 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                 </Dropdown>
             }
         }
-    ];
+    ] : [
+        {
+            title: '股票',
+            dataIndex: 'mc',
+            width: 90,
+            render: (_, record) => {
+                return <Dropdown menu={{ items }} trigger={['contextMenu']}>
+                    <div className="item-spn">{record.mc}</div>
+                </Dropdown>
+            }
+        },
+        {
+            title: '最新价',
+            dataIndex: 'p',
+            width: 80,
+            sortDirections: ['descend', 'ascend'], // 先降序，在升序
+            sorter: (a, b) => a.p - b.p,
+            render: (_, record) => {
+                if (!record.pc) {
+                    record.pc = record.zf
+                }
+                return <Dropdown menu={{ items }} trigger={['contextMenu']}>
+                    <div className={`${Number(record.pc) > 0 ? 'rise' : 'fall'} item-spn`}>{record.p}</div>
+                </Dropdown>
+            }
+        },
+        {
+            title: '涨幅',
+            dataIndex: ['pc', 'zf'],
+            width: 80,
+            sortDirections: ['descend', 'ascend'],
+            sorter: (a, b) => Number(a.pc.replace("%", "")) - Number(b.pc.replace("%", "")),
+            render: (_, record) => {
+                if (!record.pc) {
+                    record.pc = record.zf
+                }
+                return <Dropdown menu={{ items }} trigger={['contextMenu']}>
+                    <div className={`${Number(record.pc) > 0 ? 'rise' : 'fall'} item-spn`}>
+                        {Number(record.pc) > 0 ? '+' : ''}
+                        {record.pc}%
+                    </div>
+                </Dropdown>
+            }
+        },
+        {
+            title: '涨跌',
+            dataIndex: 'ud',
+            width: 80,
+            sortDirections: ['descend', 'ascend'],
+            sorter: (a, b) => Number(a.ud) - Number(b.ud),
+            render: (_, record) => {
+                if (!record.ud) {
+                    record.ud = (Number(record.p) - (Number(record.p) / (1 + Number(record.zf) / 100))).toFixed(2)
+                }
+                return <Dropdown menu={{ items }} trigger={['contextMenu']}>
+                    <div className={`${Number(record.ud) > 0 ? 'rise' : 'fall'} item-spn`}>
+                        {Number(record.ud) > 0 ? '+' : ''}
+                        {record.ud}
+                    </div>
+                </Dropdown>
+            }
+        }
+    ]
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -278,7 +340,7 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
                             row: Row,
                         },
                     }}
-                    scroll={{ x: 470 }}
+                    scroll={{ x: isDrop ? 470 : 320}}
                     rowKey="key"
                     showSorterTooltip={false}
                     pagination={false}

@@ -274,10 +274,10 @@ function isRedThreeSoldiers(record) {
     const candlestick3 = arr[2];
 
     // 计算三个实体的两两之间的差的绝对值
-    const diffs = [Math.abs(candlestick1.zde - candlestick2.zde), Math.abs(candlestick2.zde - candlestick3.zde), Math.abs(candlestick1.zde - candlestick3.zde)];
-    
+    const diffs = [Math.abs(candlestick1.zd - candlestick2.zd), Math.abs(candlestick2.zd - candlestick3.zd), Math.abs(candlestick1.zd - candlestick3.zd)];
+    console.log(diffs)
     // 定义容忍范围
-    const tolerance = 0.6;
+    const tolerance = 1;
     
     // 检查K线实体是否较短，是否小于或等于容忍范围
     const diffFlag =  diffs.every(diff => diff <= tolerance);
