@@ -97,7 +97,6 @@ export const openEquityMarketDay = (yesterday) => {
     let day = yesterday ? new Date(yesterday).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
     // 判断day这天股市是否开盘
     if(!publicHolidays.includes(day) && (weekDay >= 1 && weekDay <= 5)) {
-        console.log(day)
         return day;
     } else {
         // 将字符串转换回Date对象 

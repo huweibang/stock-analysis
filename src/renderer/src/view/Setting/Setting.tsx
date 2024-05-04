@@ -24,8 +24,6 @@ const Setting: React.FC = () => {
             if (err) { console.log("读取失败"); return };
             let settingData = JSON.parse(data);
             // 判断是否存在closeTray
-            console.log(changedValues)
-            console.log(settingData)
             if (changedValues.hasOwnProperty('closeTray')) {
                 window.api.windowSetClose();
                 settingData.closeTray = changedValues.closeTray

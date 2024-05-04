@@ -61,7 +61,6 @@ const getStockList = async () => {
         item.api_code = item.dm;
     });
     allStockList = res;
-    console.log(allStockList)
 }
 getStockList();
 

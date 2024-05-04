@@ -123,8 +123,8 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
         const res = await HistoricalMa(item.api_code, "dq");
 
         const line = calculate(obj.splice(-14), res.splice(-14))
-        console.log(line)
         item.line = line
+
         if (line) {
             setLoadings((prevLoadings) => {
                 const newLoadings = [...prevLoadings];
@@ -201,8 +201,6 @@ const ListView: React.FC<ListViewProps> = ({ data, getMoveList }) => {
             dataIndex: 'line',
             fixed: "right",
             render: (_, record) => {
-                console.log(_)
-                console.log(record)
                 return <Dropdown menu={{ items }} trigger={['contextMenu']}>
                     <div className='item-spn'>
                         {

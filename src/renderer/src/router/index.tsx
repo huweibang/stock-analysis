@@ -4,7 +4,6 @@ import {
     AlignLeftOutlined,
     ProductOutlined,
     SettingOutlined,
-    ProjectOutlined
 } from '@ant-design/icons';
 import NotFound from "@/components/NotFound/NotFound";
 import Index from "../view/Index/Index";
@@ -14,7 +13,6 @@ import StockDetail from "../view/Stocks/StockDetail";
 import Kline from "../view/Dataset/Kline";
 import Reference from "../view/Dataset/Reference";
 import Institution from "../view/Dataset/Institution";
-import Strategy from "../view/Strategy/Strategy"
 import Setting from "../view/Setting/Setting";
 
 type RouteObject = {
@@ -34,7 +32,7 @@ const pages :RouteObject[] = [
         element: <NotFound />,
     },
     {
-        path: "/Index/Index",
+        path: "/",
         label: "行情",
         hidden: false,
         element: <Index />,
@@ -80,14 +78,6 @@ const pages :RouteObject[] = [
                 element: <Institution />,
             }
         ]
-    },
-    {
-        // path: '/Strategy/index',
-        path: '/',
-        label: "策略",
-        hidden: false,
-        element: <Strategy />,
-        icon: <ProjectOutlined />
     },
     {
         path: '/Setting',

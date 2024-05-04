@@ -15,6 +15,7 @@ interface DataType {
     pc: string;
     api_code: string;
     zf: string;
+    line: string;
 }
 
 // 自选

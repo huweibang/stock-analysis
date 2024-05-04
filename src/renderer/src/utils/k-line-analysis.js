@@ -113,7 +113,6 @@ const upState = (record) => {
 
     // 如果超过一半的元素是上升的，且累积变化是正数，则整体趋势是上涨的
     if((decreasingCount > record.length / 2) || cumulativeChange > 0) {
-        console.log("上涨的")
         return true
     } else {
         return false
@@ -158,7 +157,7 @@ const upperShadowLength = (item) => {
 const lowerShadowLength = (item) => {
     // 确定实体的底部
     const bodyBottom = item.c <= item.o ? item.c : item.o;
-    // 计算上影线长度，即最高价与实体顶部的差值
+    // 计算上影线长度，即实体底部与最低价的差值
     return bodyBottom - item.l;
 }
 
@@ -173,7 +172,6 @@ const lowerShadowLength = (item) => {
  * l - 最低价
  */
 function isHammerCandlestick(record) {
-    console.log(1)
     if(downState(record)) {
         // 计算实体部分的大小（开盘价与收盘价的绝对差值）
         const bodySize = bodyLength(lastItem);
@@ -198,7 +196,6 @@ function isHammerCandlestick(record) {
  * 3. 下影线较短或没有，这里假设下影线长度不超过实体长度
  */
 function isLowHammerstick(record) {
-    console.log(2)
     if(downState(record)) {
         const bodySize = bodyLength(lastItem);
         const upperShadow = upperShadowLength(lastItem);
@@ -214,7 +211,6 @@ function isLowHammerstick(record) {
 
 // 判断仙人指路
 function isImmortal(record) {
-    console.log(3)
     if(upState(record)) {
         const secondLast = record[record.length - 2]
         const bodySize = bodyLength(lastItem);
@@ -248,7 +244,6 @@ function isImmortal(record) {
 
 // 低位十字星
 function lowCrossStar (record) {
-    console.log(4)
     if(downState(record)) {
         const bodySize = bodyLength(lastItem);
         const upperShadow = upperShadowLength(lastItem);
@@ -273,34 +268,38 @@ function lowCrossStar (record) {
  * 3. 没有跳空高开：每根K线的开盘价与前一根K线的收盘价相近，没有出现明显的跳空。
  */
 function isRedThreeSoldiers(record) {
-    console.log(5)
     const arr = record.slice(-3);
     const candlestick1 = arr[0];
     const candlestick2 = arr[1];
     const candlestick3 = arr[2];
-    // 定义短实体和短影线的长度阈值，这些值可能需要根据具体情况调整
-    const shortBodyThreshold = candlestick1.h - candlestick1.l * 0.5;
-    const shortShadowThreshold = Math.min(
-        candlestick1.h - Math.max(candlestick1.o, candlestick1.c),
-        Math.max(candlestick1.o, candlestick1.c) - candlestick1.l
-    ) * 0.5;
+
+    // 计算三个实体的两两之间的差的绝对值
+    const diffs = [Math.abs(candlestick1.zde - candlestick2.zde), Math.abs(candlestick2.zde - candlestick3.zde), Math.abs(candlestick1.zde - candlestick3.zde)];
     
+    // 定义容忍范围
+    const tolerance = 0.6;
+    
+    // 检查K线实体是否较短，是否小于或等于容忍范围
+    const diffFlag =  diffs.every(diff => diff <= tolerance);
+
     // 检查每根K线是否为阳线
     const isBullishCandlestick = (item) => item.c > item.o;
     
-    // 检查K线实体和影线是否都较短
+    // 检擦影线是否较短
     const hasShortBodyAndShadow = (item) => {
-        const bodyLength = Math.abs(item.c - item.o);
-        const upperShadow = Math.min(item.h - item.o, item.h - item.c);
-        const lowerShadow = Math.min(item.o - item.l, item.c - item.l);
-        return bodyLength <= shortBodyThreshold && upperShadow <= shortShadowThreshold && lowerShadow <= shortShadowThreshold;
+        const bodySize = bodyLength(item);
+        const upperShadow = upperShadowLength(item);
+        const lowerShadow = lowerShadowLength(item);
+        
+        return  upperShadow <= bodySize + 0.5 && lowerShadow <= bodySize + 0.5;
     };
     
     // 检查连续性（没有跳空高开）
-    const hasNoGapUp = candlestick2.o <= candlestick1.c && candlestick3.o <= candlestick2.c;
+    const hasNoGapUp = candlestick2.l <= candlestick1.h && candlestick3.l <= candlestick2.h;
     
     // 所有条件必须满足才能判定为红三兵
     return (
+        diffFlag &&
         isBullishCandlestick(candlestick1) &&
         isBullishCandlestick(candlestick2) &&
         isBullishCandlestick(candlestick3) &&
@@ -319,7 +318,6 @@ function isRedThreeSoldiers(record) {
  * 4. 第三根阳线成交量放大：与前两根K线相比，第三根阳线对应的成交量有明显增加。
  */
 function isMultiPartyArtillery(record) {
-    console.log(6)
     const arr = record.slice(-3);
     const candlestick1 = arr[0];
     const candlestick2 = arr[1];
@@ -749,8 +747,6 @@ function isShavenHeadYang() {
     upperShadow = upperShadow < threshold ? 0 : upperShadow.toFixed(2);
     lowerShadow = lowerShadow < threshold ? 0 : lowerShadow.toFixed(2);
 
-    console.log("光头阳上影线",upperShadow)
-    console.log("光头阳下影线",lowerShadow)
     const line1 = upperShadow == 0;
     const line2 = lowerShadow == 0;
 
