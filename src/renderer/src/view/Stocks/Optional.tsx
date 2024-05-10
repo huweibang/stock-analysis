@@ -103,8 +103,7 @@ const Optional: React.FC = () => {
     useEffect(() => {
         const flag = stockFlag();
         // 每30秒更新一次
-        // flag ? setInterval(execute() , 30000) : execute();
-        getList();
+        flag ? setInterval(execute() , 30000) : execute();
         listen();
 
         // 清除函数，用于在组件卸载时停止监视  

@@ -53,7 +53,7 @@ export const stockFlag = () => {
             const now = new Date();
             const hours = now.getHours();
             const minutes = now.getMinutes();
-
+            
             // 转换时间为24小时制  
             const openMorningHour = 9;
             const openMorningMinute = 30;
@@ -95,15 +95,30 @@ export const stockFlag = () => {
 export const openEquityMarketDay = (yesterday) => {
     let weekDay = yesterday ? new Date(yesterday).getDay() : new Date().getDay();  // 获取星期几 0 周日 1 周一 ...
     let day = yesterday ? new Date(yesterday).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+    console.log(day)
+    // 判断当天是否在9点半之后，之前则返回前一天
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+
+    const openMorningHour = 9;
+    const openMorningMinute = 30;
+
+    // 将字符串转换回Date对象 
+    let todayDate = new Date(day);
+    // 回退一天  
+    todayDate.setDate(todayDate.getDate() - 1); 
+    let previousDay = todayDate.toISOString().split('T')[0]
+
     // 判断day这天股市是否开盘
     if(!publicHolidays.includes(day) && (weekDay >= 1 && weekDay <= 5)) {
-        return day;
+        if(hours < openMorningHour) {
+            return previousDay
+        } else if(hours === openMorningHour && minutes < openMorningMinute) {
+            return previousDay
+        }
+        return day
     } else {
-        // 将字符串转换回Date对象 
-        let todayDate = new Date(day);
-        // 回退一天  
-        todayDate.setDate(todayDate.getDate() - 1); 
-        let previousDay = todayDate.toISOString().split('T')[0]
         return openEquityMarketDay(previousDay);
     }
 }

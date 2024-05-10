@@ -101,7 +101,7 @@ export const calculate = (list, maList) => {
 
 // 判断K线是否处于上涨状态
 const upState = (record) => {
-    // 判断是否是处于下跌状态
+    // 判断是否是处于上涨状态
     let decreasingCount = 0; // 统计上涨个数
     let cumulativeChange = 0; // 累计价格变化
     for (let i = 1; i < record.length; i++) {
@@ -149,6 +149,7 @@ const bodyLength = (item) => {
 const upperShadowLength = (item) => {
     // 确定实体的顶部
     const bodyTop = item.c >= item.o ? item.c : item.o;
+    console.log(bodyTop)
     // 计算上影线长度，即最高价与实体顶部的差值
     return item.h - bodyTop;
 }
@@ -275,7 +276,7 @@ function isRedThreeSoldiers(record) {
 
     // 计算三个实体的两两之间的差的绝对值
     const diffs = [Math.abs(candlestick1.zd - candlestick2.zd), Math.abs(candlestick2.zd - candlestick3.zd), Math.abs(candlestick1.zd - candlestick3.zd)];
-    console.log(diffs)
+    
     // 定义容忍范围
     const tolerance = 1;
     
@@ -741,7 +742,6 @@ function isShavenHeadYang() {
     const riseLast = lastItem.zde > 0;
     let upperShadow = upperShadowLength(lastItem);
     let lowerShadow = lowerShadowLength(lastItem);
-
     // 如果数值小于阈值，则返回0；否则返回原数值
     const threshold = 0.1;
     upperShadow = upperShadow < threshold ? 0 : upperShadow.toFixed(2);

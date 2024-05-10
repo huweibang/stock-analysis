@@ -17,26 +17,6 @@ if(process.env['NODE_ENV'] == "development") {
 	localStorage.settingUrl = path.join(__dirname, "../../setting.txt");
 }
 
-fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
-	if (err) { console.log("读取失败"); return };
-	const settingData = JSON.parse(data);
-	if(settingData.riseFall == "fall") {
-		document.documentElement.style.setProperty('--main-rise-color', '#389e0d');
-		document.documentElement.style.setProperty('--rise-border-color', '#b7eb8f');
-		document.documentElement.style.setProperty('--rise-background-color', '#f6ffed');
-		document.documentElement.style.setProperty('--main-fall-color', '#f5222d');
-		document.documentElement.style.setProperty('--fall-border-color', '#ffccc7');
-		document.documentElement.style.setProperty('--fall-background-color', '#fff2f0');
-	} else if(settingData.riseFall == "rise") {
-		document.documentElement.style.setProperty('--main-rise-color', '#f5222d');
-		document.documentElement.style.setProperty('--rise-border-color', '#ffccc7');
-		document.documentElement.style.setProperty('--rise-background-color', '#fff2f0');
-		document.documentElement.style.setProperty('--main-fall-color', '#389e0d');
-		document.documentElement.style.setProperty('--fall-border-color', '#b7eb8f');
-		document.documentElement.style.setProperty('--fall-background-color', '#f6ffed');
-	}
-})
-
 // Router数组扁平化
 const renderRouter = (routes): RouteObject[] => {
 	return routes.reduce((arr, item) => {
@@ -56,13 +36,43 @@ const RouteItems = renderRouter(pages).map((item, index) =>
 );
 
 const App: React.FC = () => {
-	const [isModalOpen, setIsModalOpen] = useState(true);
+	const [settingData, setSettingData] = useState<any>({});
+	const [isModalOpen, setIsModalOpen] = useState(false);
     // 定义跳转
     const navigate = useNavigate();
 
+    fs.readFile(localStorage.settingUrl, "utf8", (err, data) => {
+        if (err) { console.log("读取失败"); return };
+        
+        const obj = JSON.parse(data);
+        setSettingData(obj)
+
+        setIsModalOpen(settingData.isOpen)
+        if(settingData.riseFall == "fall") {
+            document.documentElement.style.setProperty('--main-rise-color', '#389e0d');
+            document.documentElement.style.setProperty('--rise-border-color', '#b7eb8f');
+            document.documentElement.style.setProperty('--rise-background-color', '#f6ffed');
+            document.documentElement.style.setProperty('--main-fall-color', '#f5222d');
+            document.documentElement.style.setProperty('--fall-border-color', '#ffccc7');
+            document.documentElement.style.setProperty('--fall-background-color', '#fff2f0');
+        } else if(settingData.riseFall == "rise") {
+            document.documentElement.style.setProperty('--main-rise-color', '#f5222d');
+            document.documentElement.style.setProperty('--rise-border-color', '#ffccc7');
+            document.documentElement.style.setProperty('--rise-background-color', '#fff2f0');
+            document.documentElement.style.setProperty('--main-fall-color', '#389e0d');
+            document.documentElement.style.setProperty('--fall-border-color', '#b7eb8f');
+            document.documentElement.style.setProperty('--fall-background-color', '#f6ffed');
+        }
+    })
+
 	// 同意
 	const handleOk = () => {
-		setIsModalOpen(false);
+        settingData.isOpen = false;
+        setSettingData(settingData)
+        
+        fs.writeFile(localStorage.settingUrl, JSON.stringify(settingData), err => {
+            if (err) { console.log("写入失败"); return };
+        })
 	};
 	
 	// 不同意
@@ -100,7 +110,7 @@ const App: React.FC = () => {
 				cancelText="我不同意以上内容"
 			>
 				<p>本产品初衷意在提供简单化的查看股票的方式，拒绝繁杂，让人眼花缭乱的数据。</p>
-				<p>本产品提供对股票的K线形态展示以及分析结果，和部分数据集合展示。</p>
+				<p>本产品提供对股票的K线形态展示以及分析结果，和部分数据集合展示。K线分析将于每次开盘日下午4点后更新</p>
                 <p>本产品不提供任何投资建议，炒股盈亏自负。 </p>
 			</Modal>
 		</div>
